@@ -1,0 +1,11 @@
+{
+  "name": "sortiment",
+  "scripts": {
+    "css-dev": "tailwindcss -i trojstenid/app.css -o trojstenid/users/static/app.css --watch",
+    "css-prod": "tailwindcss -i trojstenid/app.css -o trojstenid/users/static/app.css --minify"
+  },
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.3",
+    "tailwindcss": "^3.3.2"
+  }
+}
