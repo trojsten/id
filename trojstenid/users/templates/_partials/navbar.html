@@ -1,0 +1,39 @@
+{% load static %}
+<div class="flex py-5 shrink-0 items-center justify-center bg-trojsten -mx-6">
+    <img class="h-12 w-auto" src="{% static "logo.svg" %}" alt="Trojsten">
+</div>
+<nav class="flex flex-1 flex-col">
+    <ul role="list" class="flex flex-1 flex-col gap-y-7">
+        <li>
+            <ul role="list" class="-mx-2 space-y-1">
+{#                <li>#}
+{#                    <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->#}
+{#                    <a href="#"#}
+{#                       class="bg-gray-800 text-white group flex gap-x-2 rounded-md p-2 text-sm leading-6 font-bold">#}
+{#                        <iconify-icon icon="mdi:home" height="24"></iconify-icon>#}
+{#                        Dashboard#}
+{#                    </a>#}
+{#                </li>#}
+                <li>
+                    <a href="{% url "account_email" %}"
+                       class="text-gray-400 hover:text-white hover:bg-gray-800 group flex gap-x-2 rounded-md p-2 text-sm leading-6 font-bold">
+                        <iconify-icon icon="mdi:email" height="24"></iconify-icon>
+                        E-mailové adresy
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="-mx-6 mt-auto">
+            <a href="#"
+               class="flex items-center gap-x-4 px-6 py-3 text-white hover:bg-gray-800">
+                <img class="h-8 w-8 rounded-full bg-gray-800"
+                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                     alt="">
+                <div>
+                    <p class="text-sm font-semibold">{{ user.get_full_name }}</p>
+                    <p class="text-xs text-gray-500">{{ user.username }}</p>
+                </div>
+            </a>
+        </li>
+    </ul>
+</nav>
