@@ -1,0 +1,76 @@
+{% extends "auth_base.html" %}
+{% load socialaccount %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load forms %}
+
+{% block title %}Prihlásiť sa - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <h2 class="mb-6 text-center text-2xl font-bold tracking-tight text-gray-900">
+        Prihlásenie do Trojsten ID
+    </h2>
+
+    <form class="space-y-6" method="POST">
+        {% csrf_token %}
+        {% input form.login %}
+
+        <div>
+            <div class="flex items-center justify-between">
+                <label for="{{ form.password.id_for_label }}"
+                       class="block text-sm font-medium leading-6 text-gray-900">Heslo</label>
+
+                <div class="text-sm leading-6">
+                    <a href="{% url "account_reset_password" %}" class="font-semibold link">Zabudnuté heslo?</a>
+                </div>
+            </div>
+
+            <div class="mt-2">
+                {% render_field form.password class+="input" %}
+            </div>
+        </div>
+
+        {% input form.remember %}
+
+        <div>
+            <button type="submit" class="btn btn-blue">Prihlásiť sa</button>
+        </div>
+    </form>
+
+    <div>
+        <div class="relative mt-10">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                <div class="w-full border-t border-gray-200"></div>
+            </div>
+            <div class="relative flex justify-center text-sm font-medium leading-6">
+                <span class="bg-white px-6 text-gray-900">Alebo prihlásiť pomocou</span>
+            </div>
+        </div>
+
+        <div class="mt-6 grid grid-cols-2 gap-4">
+            <form method="POST" action="{% provider_login_url 'google' %}">
+                {% csrf_token %}
+
+                <button type="submit"
+                   class="btn btn-black">
+                    <iconify-icon icon="devicon-plain:google"></iconify-icon>
+                    Google
+                </button>
+            </form>
+
+            <form method="POST" action="{% provider_login_url 'trojsten-login' %}">
+                {% csrf_token %}
+
+                <button type="submit"
+                   class="btn btn-black">
+                    starý Trojsten Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <p class="mt-10 text-center text-sm text-gray-500">
+        Nemáš účet?
+        <a href="{% url "account_signup" %}" class="font-semibold link">Zaregistruj sa</a>
+    </p>
+{% endblock %}

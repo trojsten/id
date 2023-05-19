@@ -1,0 +1,24 @@
+{% extends "auth_base.html" %}
+{% load forms %}
+
+{% block title %}Registrácia - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <h2 class="mb-6 text-center text-2xl font-bold tracking-tight text-gray-900">
+        Registrácia Trojsten ID
+    </h2>
+
+    <form class="space-y-6" method="POST">
+        {% csrf_token %}
+        {% form form %}
+
+        <div>
+            <button type="submit" class="btn btn-blue">Zaregistrovať účet</button>
+        </div>
+    </form>
+
+    <p class="mt-10 text-center text-sm text-gray-500">
+        Máš už účet?
+        <a href="{% url "account_login" %}" class="font-semibold link">Prihlás sa</a>
+    </p>
+{% endblock %}

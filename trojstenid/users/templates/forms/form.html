@@ -1,0 +1,7 @@
+{% load forms %}
+
+{% for field in form.visible_fields %}
+    {% input field %}
+{% endfor %}
+
+{% for field in form.hidden_fields %}{{ field }}{% endfor %}

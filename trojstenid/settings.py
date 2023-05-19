@@ -35,9 +35,16 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.sites",
     "django.contrib.staticfiles",
-    "trojstenid.users",
     "debug_toolbar",
+    "trojstenid.users",
+    "widget_tweaks",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.openid_connect",
 ]
 
 MIDDLEWARE = [
@@ -70,6 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "trojstenid.wsgi.application"
+SITE_ID = 1
 
 
 # Database
@@ -99,11 +107,47 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "users.User"
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_FORMS = {
+    "signup": "trojstenid.users.forms.OurSignupForm",
+}
+
+SOCIALACCOUNT_PROVIDERS = {
+    "openid_connect": {
+        "SERVERS": [
+            {
+                "id": "trojsten-login",  # 30 characters or less
+                "name": "Trojsten Login",
+                "server_url": "https://login.trojsten.sk",
+                "APP": {
+                    "client_id": env("TROJSTEN_LOGIN_CLIENT"),
+                    "secret": env("TROJSTEN_LOGIN_SECRET"),
+                },
+                "SCOPE": ["read"],
+                "VERIFIED_EMAIL": True,
+            },
+        ],
+    }
+}
+SOCIALACCOUNT_AUTO_SIGNUP = False
+SOCIALACCOUNT_FORMS = {
+    "signup": "trojstenid.users.forms.OurSocialSignupForm",
+}
+
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "sk"
 TIME_ZONE = "Europe/Bratislava"
 USE_I18N = True
 USE_TZ = True

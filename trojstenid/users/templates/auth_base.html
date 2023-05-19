@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+    <div class="w-full min-h-screen h-full bg-gray-900 bg-cover bg-center bg-fixed"
+         style="background-image: url('{% static "background.jpg" %}');">
+
+        <div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+            <div class="sm:mx-auto sm:w-full sm:max-w-md">
+                <img class="mx-auto h-20 w-auto" src="{% static "logo.svg" %}" alt="Trojsten">
+            </div>
+
+            <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+                <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

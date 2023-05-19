@@ -8,6 +8,8 @@ django = "==4.2.1"
 psycopg2-binary = "==2.9.6"
 django-debug-toolbar = "==4.1.0"
 django-environ = "==0.10.0"
+django-allauth = "==0.54.0"
+django-widget-tweaks = "==1.4.12"
 
 [dev-packages]
 
