@@ -1,3 +1,4 @@
+{% load settings %}
 {% load static %}
 <div class="flex py-5 shrink-0 items-center justify-center bg-trojsten -mx-6">
     <img class="h-12 w-auto" src="{% static "logo.svg" %}" alt="Trojsten">
@@ -6,6 +7,7 @@
     <ul role="list" class="flex flex-1 flex-col gap-y-7">
         <li>
             <ul role="list" class="-mx-2 space-y-1">
+                {% navbar_menu %}
 {#                <li>#}
 {#                    <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->#}
 {#                    <a href="#"#}
@@ -14,13 +16,6 @@
 {#                        Dashboard#}
 {#                    </a>#}
 {#                </li>#}
-                <li>
-                    <a href="{% url "account_email" %}"
-                       class="text-gray-400 hover:text-white hover:bg-gray-800 group flex gap-x-2 rounded-md p-2 text-sm leading-6 font-bold">
-                        <iconify-icon icon="mdi:email" height="24"></iconify-icon>
-                        E-mailové adresy
-                    </a>
-                </li>
             </ul>
         </li>
         <li class="-mx-6 mt-auto">
