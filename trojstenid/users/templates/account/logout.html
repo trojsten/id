@@ -1,0 +1,24 @@
+{% extends "auth_base.html" %}
+{% load forms %}
+
+{% block title %}Odhlásenie - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <h2 class="mb-6 text-center text-2xl font-bold tracking-tight text-gray-900">
+        Odhlásenie
+    </h2>
+
+    <form class="space-y-6" method="POST">
+        <p class="text-gray-600 text-sm">
+            Naozaj sa chceš odhlásiť?
+        </p>
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+
+        {% csrf_token %}
+        <div>
+            <button type="submit" class="btn btn-red">Odhlásiť sa</button>
+        </div>
+    </form>
+{% endblock %}
