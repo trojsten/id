@@ -1,0 +1,10 @@
+{% extends "account/email/base_message.txt" %}
+
+{% block content %}Tento e-mail ti posielame, pretože si ty alebo niekto iný požiadal o obnovu hesla.
+Používateľ s e-mailovou adresou {{ email }} však u nás neexistuje.
+
+Tento e-mail môžeš ignorovať, ak si nepožiadal o obnovenie hesla.
+
+Ak si to bol ty, môžeš si zaregistrovať účet pomocou linku nižšie.
+
+{{ signup_url }}{% endblock %}

@@ -1,0 +1,6 @@
+Ahoj!
+
+{% block content %}{% endblock %}
+
+Prajeme príjemný deň,
+Trojsten

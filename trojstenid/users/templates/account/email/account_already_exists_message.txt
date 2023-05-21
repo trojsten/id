@@ -1,0 +1,10 @@
+{% extends "account/email/base_message.txt" %}
+
+{% block content %}Tento e-mail ti posielame, pretože si sa ty alebo niekto iný pokúsil zaregistrovať účet pomocou e-mailovej adresy:
+
+{{ email }}
+
+Účet používajúci túto e-mailovú adresu už ale existuje.
+V prípade, že si na to zabudol/zabudla, použi na obnovenie svojho účtu nasledujúci postup:
+
+{{ password_reset_url }}{% endblock %}
