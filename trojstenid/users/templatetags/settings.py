@@ -8,6 +8,7 @@ def navbar_menu(context):
     items = [
         ("mdi:email", "E-mailové adresy", "account_email"),
         ("mdi:password", "Zmena hesla", "account_change_password"),
+        ("mdi:account-key", "Externé účty", "socialaccount_connections"),
     ]
 
     context["items"] = items

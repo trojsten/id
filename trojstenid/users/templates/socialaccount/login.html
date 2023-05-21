@@ -1,0 +1,21 @@
+{% extends "auth_base.html" %}
+{% load forms %}
+
+{% block title %}Prihlásenie s externým účtom - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <h2 class="mb-6 text-center text-2xl font-bold tracking-tight text-gray-900">
+        Prihlásenie s externým účtom
+    </h2>
+
+    <form class="space-y-6" method="POST">
+        <p class="text-gray-600 text-sm">
+            Plánuješ sa prihlásiť prostredníctvom účtu {{ provider }}.
+        </p>
+
+        {% csrf_token %}
+        <div>
+            <button type="submit" class="btn btn-blue">Pokračovať</button>
+        </div>
+    </form>
+{% endblock %}
