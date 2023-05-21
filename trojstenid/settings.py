@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "trojstenid.users",
     "widget_tweaks",
+    "captcha",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -114,7 +115,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_FORMS = {
     "add_email": "trojstenid.users.forms.allauth.OurAddEmailForm",
-    "signup": "trojstenid.users.forms.OurSignupForm",
+    "signup": "trojstenid.users.forms.allauth.OurSignupForm",
     "change_password": "trojstenid.users.forms.allauth.OurChangePasswordForm",
     "login": "trojstenid.users.forms.allauth.OurLoginForm",
     "reset_password": "trojstenid.users.forms.allauth.OurResetPasswordForm",
@@ -143,6 +144,9 @@ SOCIALACCOUNT_AUTO_SIGNUP = False
 SOCIALACCOUNT_FORMS = {
     "signup": "trojstenid.users.forms.allauth.OurSocialSignupForm",
 }
+
+RECAPTCHA_PUBLIC_KEY = env("RECAPTCHA_PUBLIC")
+RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_PRIVATE")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
