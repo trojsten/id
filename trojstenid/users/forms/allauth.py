@@ -8,6 +8,8 @@ from allauth.account.forms import (
     AddEmailForm,
 )
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Invisible
 from django import forms
 
 
@@ -23,6 +25,7 @@ class RemovePlaceholdersMixin(forms.Form):
 class SignupMixin(RemovePlaceholdersMixin, forms.Form):
     first_name = forms.CharField(label="Meno")
     last_name = forms.CharField(label="Priezvisko")
+    captcha = ReCaptchaField(widget=ReCaptchaV2Invisible)
 
     field_order = ["first_name", "last_name", "email", "username"]
 
@@ -40,11 +43,11 @@ class OurChangePasswordForm(RemovePlaceholdersMixin, ChangePasswordForm):
 
 
 class OurResetPasswordForm(RemovePlaceholdersMixin, ResetPasswordForm):
-    pass
+    captcha = ReCaptchaField(widget=ReCaptchaV2Invisible)
 
 
 class OurResetPasswordKeyForm(RemovePlaceholdersMixin, ResetPasswordKeyForm):
-    pass
+    captcha = ReCaptchaField(widget=ReCaptchaV2Invisible)
 
 
 class OurLoginForm(RemovePlaceholdersMixin, LoginForm):

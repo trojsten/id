@@ -1,7 +1,11 @@
 {% load forms %}
 
 {% for field in form.visible_fields %}
-    {% input field %}
+    {% if field.widget_type == 'recaptchav2invisible' %}
+        {{ field }}
+    {% else %}
+        {% input field %}
+    {% endif %}
 {% endfor %}
 
 {% for field in form.hidden_fields %}{{ field }}{% endfor %}
