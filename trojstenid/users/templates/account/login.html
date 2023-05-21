@@ -1,6 +1,5 @@
 {% extends "auth_base.html" %}
 {% load socialaccount %}
-{% load i18n %}
 {% load widget_tweaks %}
 {% load forms %}
 
@@ -32,6 +31,10 @@
 
         {% input form.remember %}
 
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+
         <div>
             <button type="submit" class="btn btn-blue">Prihlásiť sa</button>
         </div>
@@ -47,26 +50,7 @@
             </div>
         </div>
 
-        <div class="mt-6 grid grid-cols-2 gap-4">
-            <form method="POST" action="{% provider_login_url 'google' %}">
-                {% csrf_token %}
-
-                <button type="submit"
-                   class="btn btn-black">
-                    <iconify-icon icon="devicon-plain:google"></iconify-icon>
-                    Google
-                </button>
-            </form>
-
-            <form method="POST" action="{% provider_login_url 'trojsten-login' %}">
-                {% csrf_token %}
-
-                <button type="submit"
-                   class="btn btn-black">
-                    starý Trojsten Login
-                </button>
-            </form>
-        </div>
+        {% include "socialaccount/partials/providers.html" with process="login" %}
     </div>
 
     <p class="mt-10 text-center text-sm text-gray-500">

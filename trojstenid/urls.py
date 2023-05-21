@@ -21,7 +21,7 @@ from trojstenid.users import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("test/", views.test),
+    path("accounts/profile/", views.ProfileView.as_view(), name="account_profile"),
     path("accounts/", include("allauth.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
 ]

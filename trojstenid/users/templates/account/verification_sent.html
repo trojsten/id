@@ -1,0 +1,17 @@
+{% extends "auth_base.html" %}
+{% load forms %}
+{% load account %}
+
+{% block title %}Overenie e-mailovej adresy - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <h2 class="mb-6 text-center text-2xl font-bold tracking-tight text-gray-900">
+        Overenie e-mailovej adresy
+    </h2>
+
+    <p class="text-gray-600 text-sm">
+        Poslali sme ti e-mail na overenie. Klikni na odkaz v e-maile pre dokončenie registrácie. Ak ti e-mail neprišiel,
+        skontroluj si priečinok nevyžiadanej pošty.
+        V prípade problémov nás kontaktuj.
+    </p>
+{% endblock %}

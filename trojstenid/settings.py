@@ -26,7 +26,6 @@ DEBUG = env("DEBUG", default=False)
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -79,14 +78,12 @@ TEMPLATES = [
 WSGI_APPLICATION = "trojstenid.wsgi.application"
 SITE_ID = 1
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     "default": env.db(),
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -116,7 +113,13 @@ ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_FORMS = {
+    "add_email": "trojstenid.users.forms.allauth.OurAddEmailForm",
     "signup": "trojstenid.users.forms.OurSignupForm",
+    "change_password": "trojstenid.users.forms.allauth.OurChangePasswordForm",
+    "login": "trojstenid.users.forms.allauth.OurLoginForm",
+    "reset_password": "trojstenid.users.forms.allauth.OurResetPasswordForm",
+    "reset_password_from_key": "trojstenid.users.forms.allauth.OurResetPasswordKeyForm",
+    "set_password": "trojstenid.users.forms.allauth.OurSetPasswordForm",
 }
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -138,9 +141,8 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 SOCIALACCOUNT_AUTO_SIGNUP = False
 SOCIALACCOUNT_FORMS = {
-    "signup": "trojstenid.users.forms.OurSocialSignupForm",
+    "signup": "trojstenid.users.forms.allauth.OurSocialSignupForm",
 }
-
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -151,7 +153,6 @@ LANGUAGE_CODE = "sk"
 TIME_ZONE = "Europe/Bratislava"
 USE_I18N = True
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

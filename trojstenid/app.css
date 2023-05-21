@@ -18,12 +18,20 @@
     @apply bg-gray-900 hover:bg-gray-800  focus-visible:outline-gray-800;
 }
 
+.btn-red {
+    @apply bg-red-500 hover:bg-red-600  focus-visible:outline-red-600;
+}
+
 .link {
     @apply text-blue-500 hover:text-blue-600;
 }
 
 .input-checkbox {
     @apply h-4 w-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500;
+}
+
+.input-radio {
+    @apply h-4 w-4 rounded-full border-gray-300 text-blue-500 focus:ring-blue-500;
 }
 
 [x-cloak] {

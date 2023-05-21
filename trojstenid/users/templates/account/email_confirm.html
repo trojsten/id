@@ -1,0 +1,28 @@
+{% extends "auth_base.html" %}
+{% load forms %}
+
+{% block title %}Overenie e-mailovej adresy - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <h2 class="mb-6 text-center text-2xl font-bold tracking-tight text-gray-900">
+        Overenie e-mailovej adresy
+    </h2>
+
+    {% if confirmation %}
+        <form class="space-y-6" method="POST">
+            <p class="text-gray-600 text-sm">
+                Kliknutím nižšie potvrdíš, že email <strong>{{ confirmation.email_address.email }}</strong> patrí
+                používateľovi {{ confirmation.email_address.user }}.
+            </p>
+            {% csrf_token %}
+            <div>
+                <button type="submit" class="btn btn-blue">Potvrdiť</button>
+            </div>
+        </form>
+    {% else %}
+        <p class="text-gray-600 text-sm">
+            Link na potvrdenie e-mailu expiroval alebo je neplatný. Môžeš si vyžiadať
+            <a href="{% url 'account_email' %}" class="font-bold link">nový potvrdzovací e-mail</a>.
+        </p>
+    {% endif %}
+{% endblock %}

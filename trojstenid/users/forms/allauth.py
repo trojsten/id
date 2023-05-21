@@ -1,4 +1,12 @@
-from allauth.account.forms import SignupForm
+from allauth.account.forms import (
+    SignupForm,
+    ChangePasswordForm,
+    ResetPasswordForm,
+    LoginForm,
+    ResetPasswordKeyForm,
+    SetPasswordForm,
+    AddEmailForm,
+)
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from django import forms
 
@@ -24,4 +32,28 @@ class OurSignupForm(SignupMixin, SignupForm):
 
 
 class OurSocialSignupForm(SignupMixin, SocialSignupForm):
+    pass
+
+
+class OurChangePasswordForm(RemovePlaceholdersMixin, ChangePasswordForm):
+    pass
+
+
+class OurResetPasswordForm(RemovePlaceholdersMixin, ResetPasswordForm):
+    pass
+
+
+class OurResetPasswordKeyForm(RemovePlaceholdersMixin, ResetPasswordKeyForm):
+    pass
+
+
+class OurLoginForm(RemovePlaceholdersMixin, LoginForm):
+    pass
+
+
+class OurSetPasswordForm(RemovePlaceholdersMixin, SetPasswordForm):
+    pass
+
+
+class OurAddEmailForm(RemovePlaceholdersMixin, AddEmailForm):
     pass

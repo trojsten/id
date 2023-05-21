@@ -1,0 +1,28 @@
+{% load socialaccount %}
+
+<div class="mt-6 grid grid-cols-2 gap-4">
+    <form method="POST" action="{% provider_login_url 'google' process=process %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+
+        <button type="submit"
+           class="btn btn-black">
+            <iconify-icon icon="devicon-plain:google"></iconify-icon>
+            Google
+        </button>
+    </form>
+
+    <form method="POST" action="{% provider_login_url 'trojsten-login' process=process %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+
+        <button type="submit"
+           class="btn btn-black">
+            starý Trojsten Login
+        </button>
+    </form>
+</div>

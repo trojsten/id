@@ -1,0 +1,54 @@
+{% extends "settings_base.html" %}
+{% load forms %}
+
+{% block title %}Externé účty - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="mx-auto max-w-2xl">
+        <h2 class="text-xl font-bold text-gray-900">Externé účty</h2>
+        <p class="text-gray-600">Do svojho Trojsten ID účtu sa vieš prihlásiť aj pomocou nasledujúcich externých
+            účtov:</p>
+
+        {% if form.accounts %}
+            <form class="mt-6 space-y-6" method="post">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="text-sm text-red-600">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="rounded border overflow-hidden divide-y">
+                    {% for base_account in form.accounts %}
+                        {% with base_account.get_provider_account as account %}
+                            <label for="id_account_{{ base_account.id }}"
+                                   class="p-4 flex justify-between items-center flex-wrap gap-y-2">
+                                <span class="flex items-center gap-2">
+                                    <input id="id_account_{{ base_account.id }}" type="radio" name="account"
+                                           class="input-radio"
+                                           value="{{ base_account.id }}"/>
+
+                                    {{ account }}
+                                </span>
+
+                                <span class="rounded-md bg-gray-50 px-2 py-1 text-xs font-bold text-gray-600 ring-1 ring-inset ring-gray-500/10">{{ account.get_brand.name }}</span>
+                            </label>
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+
+                <button class="btn btn-red" type="submit">Odpojiť</button>
+            </form>
+        {% else %}
+            <div class="rounded-md bg-red-50 p-4 mt-6 flex">
+                <iconify-icon icon="mdi:alert-circle" class="text-red-400" height="20"></iconify-icon>
+                <p class="text-sm text-red-800 ml-3">Nemáš pripojené žiadne externé účty</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="mx-auto max-w-2xl mt-12">
+        <h2 class="text-xl font-bold text-gray-900">Pripojiť externý účet</h2>
+
+        {% include "socialaccount/partials/providers.html" with process="connect" %}
+    </div>
+{% endblock %}
