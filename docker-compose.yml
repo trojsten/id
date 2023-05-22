@@ -23,7 +23,7 @@ services:
       - .env
     depends_on:
       - db
-    command: "./start_dev.sh"
+    command: "./start.sh dev"
 
   tailwind:
     build:

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.openid_connect",
     "oauth2_provider",
     "django_cleanup",
+    "django_probes",
 ]
 
 MIDDLEWARE = [
