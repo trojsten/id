@@ -7,7 +7,7 @@
     <div class="mx-auto max-w-2xl">
         <h2 class="text-xl font-bold text-gray-900">Osobné údaje</h2>
 
-        <form method="post" class="mt-6 space-y-6">
+        <form method="post" class="mt-6 space-y-6" enctype="multipart/form-data">
             {% csrf_token %}
 
             <div class="grid sm:grid-cols-2 gap-6 sm:gap-4">
@@ -15,6 +15,21 @@
                 {% input form.last_name %}
             </div>
 
+            <div>
+                <label for="{{ form.avatar_file.id_for_label }}" class="block text-sm font-medium leading-6 text-gray-900">Profilová fotka</label>
+                <div class="flex gap-4 mt-2 items-center">
+                    <div>
+                        <img src="{{ user.avatar }}" alt="Aktuálna profilová fotka" class="rounded-full w-20">
+                    </div>
+                    <div>
+                        <input type="file" name="{{ form.avatar_file.html_name }}" accept="image/*" id="{{ form.avatar_file.id_for_label }}">
+
+                        <label class="flex items-center mt-2 text-sm leading-6 text-gray-900">
+                            <input type="checkbox" class="input-checkbox mr-3" name="{{ form.avatar_file.html_name }}-clear"> Vymazať a použiť predvolenú fotku
+                        </label>
+                    </div>
+                </div>
+            </div>
             {# TODO: Other personal data... #}
 
             <div>
