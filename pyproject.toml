@@ -1,2 +1,19 @@
 [tool.ruff]
 select = ["E", "F", "I"]
+
+[tool.bumpver]
+current_version = "2023.0"
+version_pattern = "YYYY.PATCH"
+commit_message = "bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    'current_version = "{version}"',
+]
+"trojstenid/__init__.py" = [
+    'VERSION = "{version}"'
+]
+

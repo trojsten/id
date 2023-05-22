@@ -14,6 +14,8 @@ from pathlib import Path
 
 import environ
 
+import trojstenid
+
 env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,7 +26,10 @@ SECRET_KEY = env(
 )
 DEBUG = env("DEBUG", default=False)
 
-ALLOWED_HOSTS = []
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_HSTS_SECONDS = 3600
+
+ALLOWED_HOSTS = env("ALLOWED_HOSTS", default=[])
 
 # Application definition
 
@@ -74,6 +79,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "trojstenid.context_processors.version",
             ],
         },
     },
@@ -168,7 +174,8 @@ OAUTH2_PROVIDER = {
     },
 }
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+vars().update(env.email(default="consolemail://"))
+DEFAULT_FROM_EMAIL = env("EMAIL_FROM", default="root@localhost")
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -197,3 +204,18 @@ if DEBUG:
 
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
     INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1"]
+
+
+dsn = env("SENTRY_DSN", default="")
+if dsn:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn=dsn,
+        integrations=[DjangoIntegration()],
+        auto_session_tracking=False,
+        traces_sample_rate=0.1,
+        send_default_pii=True,
+        release=trojstenid.VERSION,
+    )
