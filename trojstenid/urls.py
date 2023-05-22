@@ -23,5 +23,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/profile/", views.ProfileView.as_view(), name="account_profile"),
     path("accounts/", include("allauth.urls")),
+    path("oauth/", include("oauth2_provider.urls", namespace="oauth2_provider")),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
