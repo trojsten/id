@@ -1,9 +1,9 @@
 import random
 
-from PIL import ImageColor
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
+from PIL import ImageColor
 
 from trojstenid.users.models import User
 

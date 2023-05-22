@@ -1,11 +1,11 @@
 from allauth.account.forms import (
-    SignupForm,
+    AddEmailForm,
     ChangePasswordForm,
-    ResetPasswordForm,
     LoginForm,
+    ResetPasswordForm,
     ResetPasswordKeyForm,
     SetPasswordForm,
-    AddEmailForm,
+    SignupForm,
 )
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from captcha.fields import ReCaptchaField
