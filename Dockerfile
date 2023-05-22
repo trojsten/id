@@ -33,4 +33,4 @@ RUN pipenv install --system --dev --deploy
 COPY . /app/
 COPY --from=cssbuild /app/trojstenid/users/static/app.css /app/trojstenid/users/static/app.css
 
-CMD ["gunicorn", "sortiment.wsgi", "--bind", "0.0.0.0:8000", "--access-logfile", "-", "--log-file", "-", "--workers", "4"]
+CMD ["gunicorn", "trojstenid.wsgi", "--bind", "0.0.0.0:8000", "--access-logfile", "-", "--log-file", "-"]

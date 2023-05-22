@@ -24,7 +24,10 @@ SECRET_KEY = env(
 )
 DEBUG = env("DEBUG", default=False)
 
-ALLOWED_HOSTS = []
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_HSTS_SECONDS = 3600
+
+ALLOWED_HOSTS = env("ALLOWED_HOSTS", default=[])
 
 # Application definition
 
@@ -168,7 +171,8 @@ OAUTH2_PROVIDER = {
     },
 }
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+vars().update(env.email(default="consolemail://"))
+DEFAULT_FROM_EMAIL = env("EMAIL_FROM", default="root@localhost")
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
