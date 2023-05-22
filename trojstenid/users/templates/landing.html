@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+    <div class="bg-white bg-fixed bg-cover bg-center min-h-screen h-screen flex justify-center items-center"
+         style="background-image: url('{% static "hero.jpg" %}');">
+
+        <nav class="absolute inset-x-0 top-0 z-50 flex items-center justify-between p-6 lg:px-8">
+            <a href="/" class="-m-1.5 p-1.5">
+                <img class="h-12"
+                     src="{% static "logo-blue.svg" %}"
+                     alt="Trojsten">
+            </a>
+
+            <a href="{% url "account_login" %}" class="font-bold leading-6 text-gray-900 hover:text-gray-700 flex items-center gap-2">
+                Prihlásiť sa
+                <iconify-icon icon="mdi:arrow-right" height="18"></iconify-icon>
+            </a>
+        </nav>
+
+
+        <div class="text-center">
+            <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Jeden účet, celý <span class="text-trojsten">Trojsten</span></h1>
+
+            <p class="mt-6 text-lg leading-8 text-trojsten">
+                Trojsten ID poskytuje jednotné prihlásenie a identitu pre všetky služby Trojstenu.
+            </p>
+
+            <div class="mt-10 flex items-center justify-center gap-6">
+                <a href="{% url "account_login" %}" class="btn-inline btn-blue">
+                    Prihlásiť sa
+                </a>
+
+                <a href="{% url "account_signup" %}" class="text-sm font-bold leading-6 text-gray-900">Registrácia</a>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
