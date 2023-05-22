@@ -2,3 +2,5 @@ __pycache__
 .idea
 node_modules
 .env
+uploads/
+static/

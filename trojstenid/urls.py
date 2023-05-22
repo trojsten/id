@@ -14,6 +14,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
@@ -21,8 +23,15 @@ from trojstenid.users import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("profile/", include("trojstenid.profiles.urls")),
     path("accounts/profile/", views.ProfileView.as_view(), name="account_profile"),
     path("accounts/", include("allauth.urls")),
     path("oauth/", include("trojstenid.users.urls_oauth", namespace="oauth2_provider")),
-    path("__debug__/", include("debug_toolbar.urls")),
 ]
+
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns.append(path("__debug__/", include(debug_toolbar.urls)))
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
