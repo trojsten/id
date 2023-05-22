@@ -162,6 +162,7 @@ OAUTH2_PROVIDER = {
         "openid": "OpenID Connect",
         "profile": "Základné osobné údaje",
         "email": "E-mailová adresa",
+        "groups": "Skupiny",
     },
 }
 

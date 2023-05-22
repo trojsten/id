@@ -4,6 +4,9 @@ from trojstenid.users.models import User
 
 
 class OurOAuth2Validator(OAuth2Validator):
+    oidc_claim_scope = OAuth2Validator.oidc_claim_scope
+    oidc_claim_scope.update({"groups": "groups"})
+
     def get_additional_claims(self, request):
         user: User = request.user
         return {
@@ -12,4 +15,5 @@ class OurOAuth2Validator(OAuth2Validator):
             "given_name": user.first_name,
             "preferred_username": user.username,
             "email": user.email,
+            "groups": [g.name for g in user.groups.all()],
         }
