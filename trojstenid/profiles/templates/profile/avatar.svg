@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="128px" height="128px" viewBox="0 0 128 128" version="1.1">
+    <rect fill="{{ background }}" width="128" height="128" />
+    <text x="50%" y="50%"
+          style="color: {{ color }}; line-height: 1; font-family: 'Source Sans Pro', sans-serif;"
+          alignment-baseline="middle" text-anchor="middle" font-size="72"
+          font-weight="400" dy=".1em" dominant-baseline="middle"
+          fill="{{ color }}">{{ text }}</text>
+</svg>

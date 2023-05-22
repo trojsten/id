@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "debug_toolbar",
     "trojstenid.users",
+    "trojstenid.profiles",
     "widget_tweaks",
     "captcha",
     "allauth",
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.openid_connect",
     "oauth2_provider",
+    "django_cleanup",
 ]
 
 MIDDLEWARE = [
@@ -180,6 +182,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "static"
+
+MEDIA_ROOT = BASE_DIR / "uploads"
+MEDIA_URL = "uploads/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
