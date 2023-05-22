@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.openid_connect",
+    "oauth2_provider",
 ]
 
 MIDDLEWARE = [
@@ -147,6 +148,23 @@ SOCIALACCOUNT_FORMS = {
 
 RECAPTCHA_PUBLIC_KEY = env("RECAPTCHA_PUBLIC")
 RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_PRIVATE")
+
+OAUTH2_PROVIDER_APPLICATION_MODEL = "users.Application"
+OAUTH2_PROVIDER = {
+    "OAUTH2_VALIDATOR_CLASS": "trojstenid.users.validators.OurOAuth2Validator",
+    "OIDC_ENABLED": True,
+    "OIDC_RSA_PRIVATE_KEY": (
+        "-----BEGIN PRIVATE KEY-----\n"
+        f"{env('OIDC_KEY')}\n"
+        "-----END PRIVATE KEY-----"
+    ),
+    "SCOPES": {
+        "openid": "OpenID Connect",
+        "profile": "Základné osobné údaje",
+        "email": "E-mailová adresa",
+        "groups": "Skupiny",
+    },
+}
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
