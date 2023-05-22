@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-from django.views.generic import UpdateView
+from django.views.generic import TemplateView, UpdateView
 
 from trojstenid.users.forms.settings import ProfileForm
 
@@ -17,3 +17,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         form.save()
         messages.success(self.request, "Osobné údaje uložené.")
         return redirect("account_profile")
+
+
+class LandingPageView(TemplateView):
+    template_name = "landing.html"
