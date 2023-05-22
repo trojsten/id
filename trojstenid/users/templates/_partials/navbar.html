@@ -20,12 +20,18 @@
         </li>
         <li class="-mx-6 mt-auto">
             <a href="#"
-               class="flex items-center gap-x-4 px-6 py-3 text-white hover:bg-gray-800">
+               class="flex items-center gap-x-4 px-6 py-3 text-white w-full hover:bg-gray-800">
                 <img class="h-8 w-8 rounded-full bg-gray-800" src="{{ user.avatar }}" alt="{{ user.get_full_name }}">
                 <div>
                     <p class="text-sm font-semibold">{{ user.get_full_name }}</p>
                     <p class="text-xs text-gray-500">{{ user.username }}</p>
                 </div>
+                <form action="{% url "account_logout" %}" method="post" class="ml-auto">
+                    {% csrf_token %}
+                    <button type="submit" class="text-red-600 p-1.5 hover:bg-red-700 hover:text-white inline-flex rounded">
+                        <iconify-icon icon="mdi:logout" height="24"></iconify-icon>
+                    </button>
+                </form>
             </a>
         </li>
     </ul>

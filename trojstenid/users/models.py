@@ -16,8 +16,17 @@ def user_avatar_name(user, filename):
     return f"avatars/{ULID()}{ext}"
 
 
+class ImageField(models.ImageField):
+    """
+    A custom ImageField that can be serialized by AllAuth during signup.
+    """
+
+    def from_db_value(self, *args):
+        return ""
+
+
 class User(AbstractUser):
-    avatar_file = models.ImageField(upload_to=user_avatar_name, blank=True)
+    avatar_file = ImageField(upload_to=user_avatar_name, blank=True)
 
     @property
     def avatar(self):
