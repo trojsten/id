@@ -24,6 +24,9 @@ class ImageField(models.ImageField):
     def from_db_value(self, *args):
         return ""
 
+    def get_db_converters(self, connection):
+        return []
+
 
 class User(AbstractUser):
     avatar_file = ImageField(upload_to=user_avatar_name, blank=True)
