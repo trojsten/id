@@ -161,6 +161,7 @@ RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_PRIVATE")
 OAUTH2_PROVIDER_APPLICATION_MODEL = "users.Application"
 OAUTH2_PROVIDER = {
     "OAUTH2_VALIDATOR_CLASS": "trojstenid.users.validators.OurOAuth2Validator",
+    "PKCE_REQUIRED": False,
     "OIDC_ENABLED": True,
     "OIDC_RSA_PRIVATE_KEY": (
         "-----BEGIN PRIVATE KEY-----\n"
