@@ -21,6 +21,7 @@ django-probes = "==1.7.0"
 
 [dev-packages]
 bumpver = "==2023.1124"
+pre-commit = "==3.3.3"
 
 [requires]
 python_version = "3.11"
