@@ -1,0 +1,32 @@
+name: pre-commit + migration check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - uses: pre-commit/action@v3.0.0
+
+  migrations:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pipenv
+        pipenv install
+    - name: Test for missing migrations
+      run: pipenv run manage.py makemigrations --check
