@@ -21,3 +21,8 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
 class LandingPageView(TemplateView):
     template_name = "landing.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("account_profile")
+        return super().dispatch(request, *args, **kwargs)
