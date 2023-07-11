@@ -17,3 +17,9 @@ class OurOAuth2Validator(OAuth2Validator):
             "email": user.email,
             "groups": [g.name for g in user.groups.all()],
         }
+
+    def validate_silent_login(self, request):
+        return request.user.is_authenticated
+
+    def validate_silent_authorization(self, request):
+        return request.user.is_authenticated
