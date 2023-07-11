@@ -19,7 +19,7 @@ class OurOAuth2Validator(OAuth2Validator):
         }
 
     def validate_silent_login(self, request):
-        return request.user and request.user.is_authenticated
+        return True
 
     def validate_silent_authorization(self, request):
-        return request.user and request.user.is_authenticated
+        return True
