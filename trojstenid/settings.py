@@ -163,6 +163,7 @@ OAUTH2_PROVIDER = {
     "OAUTH2_VALIDATOR_CLASS": "trojstenid.users.validators.OurOAuth2Validator",
     "PKCE_REQUIRED": False,
     "OIDC_ENABLED": True,
+    "OIDC_RP_INITIATED_LOGOUT_ENABLED": True,
     "OIDC_RSA_PRIVATE_KEY": (
         "-----BEGIN PRIVATE KEY-----\n"
         f"{env('OIDC_KEY')}\n"
