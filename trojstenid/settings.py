@@ -122,6 +122,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_FORMS = {
     "add_email": "trojstenid.users.forms.allauth.OurAddEmailForm",
