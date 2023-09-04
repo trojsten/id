@@ -135,19 +135,19 @@ ACCOUNT_FORMS = {
 
 SOCIALACCOUNT_PROVIDERS = {
     "openid_connect": {
-        "SERVERS": [
+        "APPS": [
             {
-                "id": "trojsten-login",  # 30 characters or less
+                "provider_id": "trojsten-login",
                 "name": "Trojsten Login",
-                "server_url": "https://login.trojsten.sk",
-                "APP": {
-                    "client_id": env("TROJSTEN_LOGIN_CLIENT"),
-                    "secret": env("TROJSTEN_LOGIN_SECRET"),
+                "client_id": env("TROJSTEN_LOGIN_CLIENT"),
+                "secret": env("TROJSTEN_LOGIN_SECRET"),
+                "settings": {
+                    "server_url": "https://login.trojsten.sk",
                 },
-                "SCOPE": ["read"],
-                "VERIFIED_EMAIL": True,
             },
         ],
+        "SCOPE": ["read"],
+        "VERIFIED_EMAIL": True,
     }
 }
 SOCIALACCOUNT_AUTO_SIGNUP = False
