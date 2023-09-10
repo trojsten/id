@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}{{ object.get_full_name }} - {{ block.super }}{% endblock %}
+
+{% block body %}
+
+<div class="max-w-4xl mx-auto p-4 sm:p-6">
+    <div class="w-full bg-blue-500 h-32 rounded-lg"></div>
+    <div class="-mt-20 text-center">
+        <img src="{{ object.avatar }}" alt="{{ object.get_full_name }}" class="w-32 h-32 mx-auto outline-white outline-4 outline rounded-full">
+        <h1 class="font-bold text-2xl mt-3">
+            {{ object.get_full_name }}
+        </h1>
+        <div>
+            {% if "trojsten:veduci" in groups %}
+            <span class="bg-red-600 text-white mt-1 font-bold gap-1 text-sm px-1 py-0.5 rounded inline-flex items-center">
+                <span class="iconify inline h-4 w-4 text-white" data-icon="mdi:account-tie"></span>
+                Vedúci
+            </span>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <h2 class="font-semibold text-3xl mb-4">Odznaky</h2>
+
+    {% if badges %}
+        {% regroup badges by group as groups %}
+        {% for group, items in groups %}
+        <h3 class="font-semibold text-2xl mb-2">{{ group.title }}</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-2">
+            {% for item in items %}
+            <div class="flex gap-2 items-center">
+                <img src="{{ item.image.url }}" class="rounded-lg h-24 shrink-0" alt="{{ item.title }}">
+                <div>
+                    <p class="text-lg font-bold leading-5">{{ item.title }}</p>
+                    <p class="leading-5 text-gray-600">{{ item.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="text-center">
+            <span class="iconify w-12 h-12 text-gray-400 mx-auto" data-icon="mdi:trophy-broken"></span>
+            <h3 class="mt-2 text-sm font-semibold text-gray-900">Žiadne odznaky</h3>
+            <p class="mt-1 text-sm text-gray-500">Tento používateľ zatiaľ nezískal žiadne odznaky.</p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

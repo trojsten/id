@@ -2,9 +2,10 @@ import random
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.views.generic import TemplateView
+from django.views.generic import DetailView, TemplateView
 from PIL import ImageColor
 
+from trojstenid.badges.models import Badge
 from trojstenid.users.models import User
 
 
@@ -33,4 +34,18 @@ class AvatarView(TemplateView):
         ctx["background"] = background
         ctx["color"] = self.get_text_color(background)
         ctx["text"] = initials
+        return ctx
+
+
+class ProfileView(DetailView):
+    template_name = "profile/profile.html"
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(User, username=self.kwargs["user"])
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        user = ctx["object"]
+        ctx["groups"] = user.groups.values_list("name", flat=True)
+        ctx["badges"] = Badge.objects.filter(badgeassignment__user=user)
         return ctx

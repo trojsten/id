@@ -2,7 +2,7 @@
 <li>
     <a href="{% url item.2 %}"
        class="{% if request.resolver_match.view_name == item.2 %}text-white bg-gray-800{% else %}text-gray-400 hover:text-white hover:bg-gray-800 group{% endif %} flex gap-x-2 rounded-md p-2 text-sm leading-6 font-bold">
-        <iconify-icon icon="{{ item.0 }}" height="24"></iconify-icon>
+        <span data-icon="{{ item.0 }}" class="iconify h-6 w-6"></span>
         {{ item.1 }}
     </a>
 </li>
