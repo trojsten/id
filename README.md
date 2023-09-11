@@ -7,7 +7,7 @@
 ## O projekte
 
 Trojsten ID vznikol ako náhrada predchádzajúceho `login.trojsten.sk` riešenia. Jeho snahou je vytvoriť jednotný
-prihlasovací systém pre všetky Trojsten stránky a služby. Taktiež poskytuje informácie o používateľoch a (čoskoro)
+prihlasovací systém pre všetky Trojsten stránky a služby. Taktiež poskytuje informácie o používateľoch a
 verejné profily.
 
 ## Inštalácia a quick-start
