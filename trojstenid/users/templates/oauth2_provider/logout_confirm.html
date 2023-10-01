@@ -33,7 +33,7 @@
 
     {% else %}
         <div class="rounded-md bg-red-50 p-4 flex">
-            <iconify-icon icon="mdi:alert-circle" class="text-red-400" height="20"></iconify-icon>
+            <span data-icon="mdi:alert-circle" class="text-red-400 iconify h-5 w-5"></span>
             <p class="text-sm text-red-800 ml-3">
                 <b>Chyba:</b> {{ error.error }}<br>
                 <span class="text-xs">{{ error.description }}</span>

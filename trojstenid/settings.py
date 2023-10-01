@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "trojstenid.users",
     "trojstenid.profiles",
+    "trojstenid.badges",
     "widget_tweaks",
     "captcha",
     "allauth",
