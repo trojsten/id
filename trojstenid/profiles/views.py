@@ -1,5 +1,6 @@
 import random
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, TemplateView
@@ -37,7 +38,7 @@ class AvatarView(TemplateView):
         return ctx
 
 
-class ProfileView(DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
     template_name = "profile/profile.html"
 
     def get_object(self, queryset=None):
