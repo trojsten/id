@@ -21,6 +21,7 @@ ENV PATH=/home/appuser/.local/bin:$PATH
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt update \
     && apt -y upgrade \
+    && apt -y install git \
     && apt -y clean \
     && rm -rf /var/lib/apt/lists/*
 
