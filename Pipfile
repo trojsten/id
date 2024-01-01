@@ -21,7 +21,7 @@ django-oauth-toolkit = {git = "git+https://github.com/jazzband/django-oauth-tool
 
 [dev-packages]
 bumpver = "==2023.1126"
-pre-commit = "==3.4.0"
+pre-commit = "==3.6.0"
 
 [requires]
 python_version = "3.11"
