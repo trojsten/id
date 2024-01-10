@@ -8,9 +8,9 @@ from allauth.account.forms import (
     SignupForm,
 )
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV2Invisible
 from django import forms
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Invisible
 
 
 class RemovePlaceholdersMixin(forms.Form):

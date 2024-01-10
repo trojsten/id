@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "trojstenid.profiles",
     "trojstenid.badges",
     "widget_tweaks",
-    "captcha",
+    "django_recaptcha",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
