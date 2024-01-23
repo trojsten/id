@@ -1,6 +1,6 @@
 from os import path
 
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from django.db import models
 from django.urls import reverse
 from oauth2_provider.models import AbstractApplication
@@ -8,7 +8,12 @@ from ulid import ULID
 
 
 class Application(AbstractApplication):
-    pass
+    group = models.ForeignKey(Group, on_delete=models.RESTRICT, blank=True, null=True)
+
+    def is_usable(self, request):
+        if self.group is not None:
+            return request.user.groups.contains(self.group)
+        return True
 
 
 def user_avatar_name(user, filename):
