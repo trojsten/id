@@ -10,11 +10,6 @@ from ulid import ULID
 class Application(AbstractApplication):
     group = models.ForeignKey(Group, on_delete=models.RESTRICT, blank=True, null=True)
 
-    def is_usable(self, request):
-        if self.group is not None:
-            return request.user.groups.contains(self.group)
-        return True
-
 
 def user_avatar_name(user, filename):
     _, ext = path.splitext(filename)

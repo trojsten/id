@@ -1,9 +1,37 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import TemplateView, UpdateView
+from oauth2_provider.views import AuthorizationView
 
 from trojstenid.users.forms.settings import ProfileForm
+from trojstenid.users.models import Application
+
+
+class TrojstenAuthorizationView(AuthorizationView):
+    def dispatch(self, request, *args, **kwargs):
+        application = get_object_or_404(
+            Application, client_id=request.GET.get("client_id")
+        )
+
+        if application.group:
+            if not request.user.is_authenticated:
+                raise PermissionDenied()
+
+            if not request.user.groups.contains(application.group):
+                return render(
+                    request,
+                    "oauth2_provider/authorize.html",
+                    {
+                        "error": {
+                            "error": "Chýbajúce oprávnenia.",
+                            "description": "Nemáš práva na prístup do tejto aplikácie.",
+                        }
+                    },
+                )
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ProfileView(LoginRequiredMixin, UpdateView):
