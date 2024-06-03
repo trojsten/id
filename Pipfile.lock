@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d583ea8fbb009c6aeb0e63fab61567ca9597aeb92680032c8cdf86db145a2cdc"
+            "sha256": "4d4450fad7906b0a85eda1ed3a34064c0ee659866b25df0dad2a5ccbccedceeb"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -232,10 +232,12 @@
             "version": "==5.0.6"
         },
         "django-allauth": {
+            "extras": [
+                "socialaccount"
+            ],
             "hashes": [
                 "sha256:2374164c468a309e6badf70bc3405136df6036f24a20a13387f2a063066bdaa9"
             ],
-            "index": "pypi",
             "markers": "python_version >= '3.7'",
             "version": "==0.63.3"
         },
@@ -520,6 +522,16 @@
             "markers": "python_version >= '3.8'",
             "version": "==2.22"
         },
+        "pyjwt": {
+            "extras": [
+                "crypto"
+            ],
+            "hashes": [
+                "sha256:57e28d156e3d5c10088e0c68abb90bfac3df82b40a71bd0daa20c65ccd5c23de",
+                "sha256:59127c392cc44c2da5bb3192169a91f429924e17aff6534d70fdc02ab3e04320"
+            ],
+            "version": "==2.8.0"
+        },
         "python-ulid": {
             "hashes": [
                 "sha256:904e19093dd6578a5ce01a8274e3e228d556d47be3bda328da2d3601c5240c4f",
@@ -543,6 +555,13 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==2.32.3"
+        },
+        "requests-oauthlib": {
+            "hashes": [
+                "sha256:7dd8a5c40426b779b0868c404bdef9768deccf22749cde15852df527e6269b36",
+                "sha256:b3dffaebd884d8cd778494369603a9e7b58d29111bf6b41bdc2dcd87203af4e9"
+            ],
+            "version": "==2.0.0"
         },
         "sentry-sdk": {
             "hashes": [
