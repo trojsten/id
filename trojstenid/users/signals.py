@@ -17,7 +17,7 @@ def assign_groups_after_login(request, user: User, **kwargs):
 
 
 @receiver(email_confirmed)
-def assign_groups_after_confirm(request, email: EmailAddress, **kwargs):
-    if email.email.endswith("@trojsten.sk"):
+def assign_groups_after_confirm(request, email_address: EmailAddress, **kwargs):
+    if email_address.email.endswith("@trojsten.sk"):
         veduci, _ = Group.objects.get_or_create(name="trojsten:veduci")
-        email.user.groups.add(veduci)
+        email_address.user.groups.add(veduci)
