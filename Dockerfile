@@ -31,6 +31,7 @@ RUN tar -xf /tmp/multirun-x86_64-linux-gnu-${MULTIRUN_VERSION}.tar.gz \
     && mv multirun /bin \
     && rm /tmp/*
 
+RUN chown appuser:appuser /app
 USER appuser
 
 RUN pip install --upgrade pipenv
