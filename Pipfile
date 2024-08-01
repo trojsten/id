@@ -7,7 +7,7 @@ name = "pypi"
 django = "==5.0.6"
 django-debug-toolbar = "==4.4.2"
 django-environ = "==0.11.2"
-django-allauth = {extras = ["socialaccount"], version = "==0.63.3"}
+django-allauth = {extras = ["socialaccount"], version = "==64.0.0"}
 django-widget-tweaks = "==1.5.0"
 django-recaptcha = "==4.0.0"
 pillow = "==10.3.0"
