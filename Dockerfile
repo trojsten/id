@@ -1,4 +1,4 @@
-FROM node:22.0.0-alpine AS cssbuild
+FROM node:22.7.0-alpine AS cssbuild
 
 WORKDIR /app
 
