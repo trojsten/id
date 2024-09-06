@@ -19,4 +19,5 @@ RUN poetry install --no-root
 COPY . /app/
 COPY --from=cssbuild /app/trojstenid/users/static/app.css /app/trojstenid/users/static/app.css
 
+RUN /app/build.sh
 ENV BASE_START=/app/start.sh
