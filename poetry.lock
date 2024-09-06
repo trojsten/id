@@ -404,19 +404,20 @@ testing = ["coverage[toml] (>=5.0a4)", "pytest (>=4.6.11)"]
 
 [[package]]
 name = "django-oauth-toolkit"
-version = "3.0.0"
+version = "2.4.0"
 description = "OAuth2 Provider for Django"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "django_oauth_toolkit-3.0.0-py3-none-any.whl", hash = "sha256:67f86180215b1ddecb096955bf9766b5f8b9dd306be0b2fe8a50c865c989933a"},
-    {file = "django_oauth_toolkit-3.0.0.tar.gz", hash = "sha256:6639f26d01d18dc3ab500fed533df2698443564c7b37c7a0990f7e81c27e5bb4"},
+    {file = "django_oauth_toolkit-2.4.0-py3-none-any.whl", hash = "sha256:4931d6bf64b6aee32a42f989f218769d1876f3daa53c6bf883d8ab793fb302ee"},
+    {file = "django_oauth_toolkit-2.4.0.tar.gz", hash = "sha256:8975eaf697413a8d54208ee068bc5ad6d1ed76f1df84e4882fbb25e7e6966e1b"},
 ]
 
 [package.dependencies]
-django = ">=4.2"
-jwcrypto = ">=1.5.0"
-oauthlib = ">=3.2.2"
+django = ">=3.2,<4.0.0 || >4.0.0"
+jwcrypto = ">=0.8.0"
+oauthlib = ">=3.1.0"
+pytz = ">=2024.1"
 requests = ">=2.13.0"
 
 [[package]]
@@ -855,6 +856,17 @@ files = [
 pydantic = ["pydantic (>=2.0)"]
 
 [[package]]
+name = "pytz"
+version = "2024.1"
+description = "World timezone definitions, modern and historical"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pytz-2024.1-py2.py3-none-any.whl", hash = "sha256:328171f4e3623139da4983451950b28e95ac706e13f3f2630a879749e7a8b319"},
+    {file = "pytz-2024.1.tar.gz", hash = "sha256:2a29735ea9c18baf14b448846bde5a48030ed267578472d8955cd0e7443a9812"},
+]
+
+[[package]]
 name = "pyyaml"
 version = "6.0.2"
 description = "YAML parser and emitter for Python"
@@ -1094,4 +1106,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "d63e6fcf0d92ac38162aadddd5cfa09261b6ce4109fea258a73b8edc43f34d3c"
+content-hash = "eb6ac086b71dc31e56073bed80d9fe03199954bb0a37a7037a2c13f36f5a1155"
