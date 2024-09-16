@@ -149,7 +149,6 @@ SOCIALACCOUNT_PROVIDERS = {
                 },
             },
         ],
-        "SCOPE": ["read"],
         "VERIFIED_EMAIL": True,
     }
 }

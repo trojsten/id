@@ -14,6 +14,18 @@
         </button>
     </form>
 
+    <form method="POST" action="{% provider_login_url 'uniba' process=process %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+
+        <button type="submit"
+           class="btn btn-black">
+            Univerzita Komenského
+        </button>
+    </form>
+    
     <form method="POST" action="{% provider_login_url 'trojsten-login' process=process %}">
         {% csrf_token %}
         {% if redirect_field_value %}
