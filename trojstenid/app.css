@@ -1,21 +1,39 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@config '../tailwind.config.js';
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 .input {
     @apply block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500;
 }
 
-.btn-base {
-    @apply items-center justify-center gap-2 rounded-md px-3 py-1.5 text-sm font-bold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
+.btn-inline, .btn {
+    @apply items-center justify-center gap-2 rounded-md px-3 py-1.5 text-sm font-bold leading-6 text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2;
 }
 
 .btn-inline {
-    @apply inline-flex btn-base;
+    @apply inline-flex;
 }
 
 .btn {
-    @apply flex w-full btn-base;
+    @apply flex w-full;
 }
 
 .btn-blue {
@@ -35,7 +53,7 @@
 }
 
 .input-checkbox {
-    @apply h-4 w-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500;
+    @apply h-4 w-4 rounded-sm border-gray-300 text-blue-500 focus:ring-blue-500;
 }
 
 .input-radio {

@@ -1,11 +1,12 @@
 {
-  "name": "sortiment",
+  "name": "trojstenid",
   "scripts": {
-    "css-dev": "tailwindcss -i trojstenid/app.css -o trojstenid/users/static/app.css --watch",
-    "css-prod": "tailwindcss -i trojstenid/app.css -o trojstenid/users/static/app.css --minify"
+    "css-dev": "npx @tailwindcss/cli -i trojstenid/app.css -o trojstenid/users/static/app.css --watch",
+    "css-prod": "npx @tailwindcss/cli -i trojstenid/app.css -o trojstenid/users/static/app.css --minify"
   },
   "dependencies": {
-    "@tailwindcss/forms": "^0.5.7",
-    "tailwindcss": "^3.4.3"
+    "@tailwindcss/cli": "^4.1.5",
+    "@tailwindcss/forms": "^0.5.10",
+    "tailwindcss": "^4.1.5"
   }
 }

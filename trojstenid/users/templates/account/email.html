@@ -11,7 +11,7 @@
         <form class="mt-6 space-y-6" method="post">
             {% csrf_token %}
 
-            <div class="rounded border overflow-hidden divide-y">
+            <div class="rounded-sm border overflow-hidden divide-y">
                 {% for emailaddress in user.emailaddress_set.all %}
                     <label for="email_radio_{{ forloop.counter }}"
                            class="p-4 flex justify-between items-center flex-wrap gap-y-2">

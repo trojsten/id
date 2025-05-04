@@ -20,7 +20,7 @@
                 </div>
                 <form action="{% url "account_logout" %}" method="post" class="ml-auto">
                     {% csrf_token %}
-                    <button type="submit" class="text-red-600 p-1.5 hover:bg-red-700 hover:text-white inline-flex rounded">
+                    <button type="submit" class="text-red-600 p-1.5 hover:bg-red-700 hover:text-white inline-flex rounded-sm">
                         <span data-icon="mdi:logout" class="iconify h-6 w-6"></span>
                     </button>
                 </form>

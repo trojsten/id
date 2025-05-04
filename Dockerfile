@@ -1,14 +1,15 @@
-FROM node:22.0.0-alpine AS cssbuild
+FROM node:23-alpine AS cssbuild
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm install
+COPY package.json pnpm-lock.yaml ./
+RUN npm install -g pnpm && \
+    pnpm install
 
 COPY trojstenid ./trojstenid
 COPY tailwind.config.js ./
-RUN npm run css-prod
-CMD ["npm", "run", "css-dev"]
+RUN pnpm run css-prod
+CMD ["pnpm", "run", "css-dev"]
 
 
 FROM ghcr.io/trojsten/django-docker:v6
