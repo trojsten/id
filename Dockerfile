@@ -11,13 +11,13 @@ RUN npm run css-prod
 CMD ["npm", "run", "css-dev"]
 
 
-FROM ghcr.io/trojsten/django-docker:v4
+FROM ghcr.io/trojsten/django-docker:v6
 
-COPY pyproject.toml poetry.lock ./
-RUN poetry install --no-root
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen
 
-COPY . /app/
-COPY --from=cssbuild /app/trojstenid/users/static/app.css /app/trojstenid/users/static/app.css
+COPY --chown=appuser:appuser . /app/
+COPY --chown=appuser:appuser --from=cssbuild /app/trojstenid/users/static/app.css /app/trojstenid/users/static/app.css
 
 RUN /app/build.sh
 ENV BASE_START=/app/start.sh

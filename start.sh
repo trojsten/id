@@ -7,6 +7,5 @@ python manage.py migrate
 if [ "${1:-prod}" = "dev" ]; then
   exec python manage.py runserver 0.0.0.0:8000
 else
-  python manage.py collectstatic --no-input
-  exec gunicorn trojstenid.wsgi --bind 127.0.0.1:8001 --access-logfile - --log-file -
+  exec /base/gunicorn.sh trojstenid.wsgi
 fi
