@@ -21,6 +21,7 @@ dependencies = [
     "django-oauth-toolkit~=3.0.1",
     "psycopg[binary]~=3.2.7",
     "django-types~=0.20.0",
+    "django-ipware~=7.0.1",
 ]
 
 [tool.ruff]

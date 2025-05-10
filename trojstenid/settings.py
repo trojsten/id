@@ -168,9 +168,7 @@ OAUTH2_PROVIDER = {
     "REQUEST_APPROVAL_PROMPT": "auto",
     "OIDC_RP_INITIATED_LOGOUT_ENABLED": True,
     "OIDC_RSA_PRIVATE_KEY": (
-        "-----BEGIN PRIVATE KEY-----\n"
-        f"{env('OIDC_KEY')}\n"
-        "-----END PRIVATE KEY-----"
+        f"-----BEGIN PRIVATE KEY-----\n{env('OIDC_KEY')}\n-----END PRIVATE KEY-----"
     ),
     "SCOPES": {
         "openid": "OpenID Connect",
@@ -204,6 +202,35 @@ MEDIA_URL = "uploads/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "log_format": {
+            "format": "%(asctime)s [%(levelname)s] %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "log_format",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+        "trojstenid": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+    },
+}
+
 
 if DEBUG:
     import socket  # only if you haven't already imported this
