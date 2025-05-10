@@ -209,7 +209,7 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "log_format": {
-            "format": "%(asctime)s [%(levelname)s] %(message)s",
+            "format": "[%(levelname)s] %(message)s",
         },
     },
     "handlers": {

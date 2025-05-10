@@ -1,9 +1,14 @@
 import logging
 
 from allauth.account.models import EmailAddress
-from allauth.account.signals import email_confirmed
+from allauth.account.signals import email_confirmed, user_logged_in, user_logged_out
 from django.contrib.auth.models import Group
-from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.contrib.auth.signals import (
+    user_logged_in as dj_user_logged_in,
+)
+from django.contrib.auth.signals import (
+    user_logged_out as dj_user_logged_out,
+)
 from django.dispatch import receiver
 from oauth2_provider.signals import app_authorized
 
@@ -13,7 +18,7 @@ from trojstenid.users.models import User
 logger = logging.getLogger(__name__)
 
 
-@receiver(user_logged_in)
+@receiver([user_logged_in, dj_user_logged_in])
 def assign_groups_after_login(request, user: User, **kwargs):
     audit.log(request, "logged in")
 
@@ -40,11 +45,14 @@ def assign_groups_after_confirm(request, email_address: EmailAddress, **kwargs):
         email_address.user.groups.add(veduci)
 
 
-@receiver(user_logged_out)
+@receiver([user_logged_out, dj_user_logged_out])
 def log_user_logout(request, user: User, **kwargs):
     audit.log(request, "logged out")
 
 
 @receiver(app_authorized)
 def log_app_authorization(sender, request, token, **kwargs):
-    audit.log(request, f"application {token.application.name} was authorized")
+    logger.info(
+        f"application {token.application.name} was authorized for "
+        f"user {token.user.username}",
+    )
