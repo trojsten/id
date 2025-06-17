@@ -1,0 +1,67 @@
+from typing import Any
+from django import forms
+from django.db.models import Q
+
+from trojstenid.schools.models import School, SchoolType, UserSchoolRecord
+from trojstenid.users.models import User
+
+
+class HtmlDateInput(forms.DateInput):
+    input_type = "date"
+
+
+class SchoolRecordForm(forms.Form):
+    start_date = forms.DateField(
+        widget=HtmlDateInput, label="Dátum nástupu", help_text="Zvyčajne 1. september."
+    )
+    start_year = forms.ChoiceField(
+        label="Počiatočný ročník",
+        help_text="V ktorom ročníku si bol/a ku dátumu nástupu.",
+    )
+    end_date = forms.DateField(
+        required=False,
+        widget=HtmlDateInput,
+        label="Dátum ukončenia",
+        help_text="Zvyčajne 31. august, môžeš nechať prázdne.",
+    )
+
+    def get_year_choices(self) -> dict:
+        if not self.school:
+            return {}
+        choices = {}
+        for school_type in self.school.types.all():
+            school_type: SchoolType
+            choices[school_type.name] = {
+                f"{school_type.id}:{idx}": f"{name} ({school_type.short})"
+                for idx, name in enumerate(school_type.years)
+            }
+        return choices
+
+    def __init__(self, school: School | None, user: User, **kwargs) -> None:
+        super().__init__(**kwargs)
+        self.school = school
+        self.user = user
+        if school:
+            self.fields["start_year"].choices = self.get_year_choices()
+
+    def clean(self) -> dict[str, Any]:
+        cleaned = super().clean()
+        if cleaned["end_date"] and cleaned["start_date"] >= cleaned["end_date"]:
+            raise forms.ValidationError(
+                "Dátum nástupu musí byť skôr ako dáťum ukončenia."
+            )
+
+        collides = (
+            UserSchoolRecord.objects.filter(user=self.user)
+            .filter(
+                Q(start_date__gte=cleaned["start_date"])
+                | Q(end_date__gte=cleaned["start_date"])
+            )
+            .exists()
+        )
+        if collides:
+            raise forms.ValidationError(
+                "Tento záznam sa prekýva s existujúcim záznamom."
+            )
+
+        return cleaned

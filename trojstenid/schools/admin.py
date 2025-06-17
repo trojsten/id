@@ -17,4 +17,4 @@ class SchoolTypeAdmin(admin.ModelAdmin):
 
 @admin.register(UserSchoolRecord)
 class UserSchoolRecordAdmin(admin.ModelAdmin):
-    pass
+    autocomplete_fields = ["school", "user"]

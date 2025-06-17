@@ -1,0 +1,41 @@
+{% extends "settings_base.html" %}
+{% load forms %}
+
+{% block title %}Nový záznam o škole - {{ block.super }}{% endblock %}
+
+{% block content %}
+  <div class="mx-auto max-w-2xl">
+    <h2 class="text-xl font-bold text-gray-900">Nový záznam o škole</h2>
+
+    {% if not school %}
+      <div class="mt-6">
+        <label for="school" class="block text-sm font-medium leading-6 text-gray-900">
+          Škola
+        </label>
+        <div class="mt-2">
+          <input type="text" name="q" id="school" class="input"
+            hx-trigger="input changed delay:1s" hx-target="#school-results" hx-get="{% url 'account_school_search' %}">
+        </div>
+        <div id="school-results" class="space-y-2 mt-2"></div>
+      </div> 
+    {% else %}
+      <form method="post" class="mt-6 space-y-6" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mt-6">
+          <label for="school" class="block text-sm font-medium leading-6 text-gray-900">
+            Škola
+          </label>
+          <div class="mt-2">
+            <input type="text" id="school" class="input" value="{{school}}" disabled readonly>
+          </div>
+          <div id="school-results" class="space-y-2 mt-2"></div>
+        </div>
+        {% form form %}
+        <div>
+          <button class="btn btn-blue" type="submit">Uložiť</button>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+{% endblock %}
