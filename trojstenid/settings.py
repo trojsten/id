@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "trojstenid.users",
     "trojstenid.profiles",
     "trojstenid.badges",
+    "trojstenid.schools",
     "widget_tweaks",
     "django_recaptcha",
     "allauth",
