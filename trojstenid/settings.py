@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.sites",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     "debug_toolbar",
     "trojstenid.users",
     "trojstenid.profiles",

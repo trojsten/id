@@ -31,7 +31,9 @@ def sync_schools():
                 real_types.append(existing_types[type_])
                 continue
 
-            new_type = SchoolType.objects.create(identifier=type_, name=type_, years=[])
+            new_type = SchoolType.objects.create(
+                identifier=type_, name=type_, short=type_, years=[]
+            )
             existing_types[type_] = new_type
             real_types.append(new_type)
 
