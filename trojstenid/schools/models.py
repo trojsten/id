@@ -1,9 +1,16 @@
+from datetime import date, timedelta
+from typing import TYPE_CHECKING
+
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 
 from trojstenid.schools.utils import date_to_academic_year
+
+if TYPE_CHECKING:
+    from trojstenid.users.models import User
 
 
 class SchoolType(models.Model):
@@ -12,6 +19,9 @@ class SchoolType(models.Model):
     name = models.CharField(max_length=128)
     short = models.CharField(max_length=128)
     years = ArrayField(models.CharField(max_length=64), blank=True)
+
+    class Meta:
+        ordering = ["identifier"]
 
     def __str__(self) -> str:
         return self.name
@@ -25,8 +35,19 @@ class School(models.Model):
     types = models.ManyToManyField(SchoolType)
     is_selectable = models.BooleanField(default=True)
 
+    class Meta:
+        ordering = ["eduid", "name"]
+
     def __str__(self) -> str:
         return f"{self.name}, {self.address}"
+
+
+class UserSchoolRecordManager(models.Manager):
+    def end_active(self, user: "User", end_date: date):
+        active_records = user.userschoolrecord_set.filter(
+            Q(end_date__isnull=True) | Q(end_date__gte=end_date)
+        )
+        active_records.update(end_date=end_date - timedelta(days=1))
 
 
 class UserSchoolRecord(models.Model):
@@ -40,6 +61,14 @@ class UserSchoolRecord(models.Model):
     start_date = models.DateField()
     start_year = models.PositiveIntegerField(default=0)
     end_date = models.DateField(blank=True, null=True)
+
+    objects: "UserSchoolRecordManager" = UserSchoolRecordManager()  # pyright: ignore
+
+    class Meta:
+        ordering = ["user_id", "start_date"]
+
+    def __str__(self) -> str:
+        return f"{self.user}, {self.school}, {self.start_date} - {self.end_date}"
 
     def get_start_display(self):
         ayear = date_to_academic_year(self.start_date)

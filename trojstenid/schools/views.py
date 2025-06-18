@@ -10,7 +10,7 @@ from django.views.generic import FormView, ListView, TemplateView
 
 from trojstenid.schools.forms import SchoolRecordForm
 from trojstenid.schools.models import School, UserSchoolRecord
-from datetime import timedelta
+from trojstenid.users.models import User
 
 
 class SchoolRecordListView(LoginRequiredMixin, ListView):
@@ -46,21 +46,21 @@ class SchoolRecordCreateView(LoginRequiredMixin, FormView):
 
     @transaction.atomic
     def form_valid(self, form: SchoolRecordForm):  # pyright: ignore
-        type_id, year = form.cleaned_data["start_year"].split(":")
+        assert isinstance(self.request.user, User)
 
-        record = UserSchoolRecord(
+        type_id, year = form.cleaned_data["start_year"].split(":")
+        start_date = form.cleaned_data["start_date"]
+        end_date = form.cleaned_data["end_date"]
+
+        UserSchoolRecord.objects.end_active(self.request.user, start_date)
+        UserSchoolRecord.objects.create(
             user=self.request.user,
             school=self.school,
-            start_date=form.cleaned_data["start_date"],
-            end_date=form.cleaned_data["end_date"],
+            start_date=start_date,
+            end_date=end_date,
             school_type_id=type_id,
             start_year=year,
         )
-        user_records = UserSchoolRecord.objects.filter(user=self.request.user)
-        user_records.filter(
-            Q(end_date__isnull=True) | Q(end_date__gte=record.start_date)
-        ).update(end_date=record.start_date - timedelta(days=1))
-        record.save()
 
         return HttpResponseRedirect(reverse("account_school"))
 
