@@ -175,10 +175,11 @@ OAUTH2_PROVIDER = {
         f"-----BEGIN PRIVATE KEY-----\n{env('OIDC_KEY')}\n-----END PRIVATE KEY-----"
     ),
     "SCOPES": {
-        "openid": "OpenID Connect",
+        "openid": "Prihlásenie cez Trojsten ID",
         "profile": "Základné osobné údaje",
         "email": "E-mailová adresa",
         "groups": "Skupiny",
+        "school_info": "Informácie o tvojej škole",
     },
 }
 

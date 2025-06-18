@@ -115,8 +115,8 @@ class UserSchoolRecord(models.Model):
     def to_dict(self) -> dict[str, Any]:
         return {
             "school": self.school.to_dict(),
-            "start_date": self.start_date,
-            "end_date": self.end_date,
+            "start_date": self.start_date.isoformat(),
+            "end_date": self.end_date.isoformat() if self.end_date else None,
             "start_year": self.start_year,
             "current_year": self.get_current_year(),
             "current_year_display": self.get_current_year_display(),
