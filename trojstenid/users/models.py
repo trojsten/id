@@ -2,8 +2,11 @@ from pathlib import PurePath
 from typing import TYPE_CHECKING
 
 from django.contrib.auth.models import AbstractUser, Group
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
+from django.utils import timezone
 from oauth2_provider.models import AbstractApplication
 from ulid import ULID
 
@@ -43,3 +46,14 @@ class User(AbstractUser):
         if self.avatar_file:
             return self.avatar_file.url
         return reverse("profile_avatar", kwargs={"user": self.username})
+
+    def get_current_school_record(self) -> "UserSchoolRecord | None":
+        now = timezone.now()
+        try:
+            return (
+                self.userschoolrecord_set.filter(start_date__lte=now)
+                .filter(Q(end_date__isnull=True) | Q(end_date__gte=now))
+                .get()
+            )
+        except ObjectDoesNotExist:
+            return None

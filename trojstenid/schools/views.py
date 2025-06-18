@@ -2,7 +2,7 @@ from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
-from django.db.models import Q, QuerySet
+from django.db.models import QuerySet
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.functional import cached_property
@@ -71,10 +71,5 @@ class SchoolSearchView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         ctx = super().get_context_data(**kwargs)
         query = self.request.GET.get("q", "")
-
-        schools = School.objects.filter(
-            Q(name__unaccent__icontains=query) | Q(address__unaccent__icontains=query)
-        )
-        ctx["schools"] = schools[:10]
-
+        ctx["schools"] = School.objects.search(query)[:10]
         return ctx
