@@ -1,8 +1,6 @@
-from typing import Any
 from django import forms
-from django.db.models import Q
 
-from trojstenid.schools.models import School, SchoolType, UserSchoolRecord
+from trojstenid.schools.models import School, SchoolType
 from trojstenid.users.models import User
 
 
@@ -44,24 +42,13 @@ class SchoolRecordForm(forms.Form):
         if school:
             self.fields["start_year"].choices = self.get_year_choices()
 
-    def clean(self) -> dict[str, Any]:
-        cleaned = super().clean()
-        if cleaned["end_date"] and cleaned["start_date"] >= cleaned["end_date"]:
-            raise forms.ValidationError(
-                "Dátum nástupu musí byť skôr ako dáťum ukončenia."
-            )
+    def clean_start_date(self):
+        start_date = self.cleaned_data["start_date"]
 
-        collides = (
-            UserSchoolRecord.objects.filter(user=self.user)
-            .filter(
-                Q(start_date__gte=cleaned["start_date"])
-                | Q(end_date__gte=cleaned["start_date"])
-            )
-            .exists()
+        future_records = self.user.userschoolrecord_set.filter(
+            start_date__gte=start_date
         )
-        if collides:
-            raise forms.ValidationError(
-                "Tento záznam sa prekýva s existujúcim záznamom."
-            )
+        if future_records.exists():
+            raise forms.ValidationError("Historické údaje nie je možné editovať.")
 
-        return cleaned
+        return start_date

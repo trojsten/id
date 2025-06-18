@@ -17,17 +17,23 @@
             hx-trigger="input changed delay:1s" hx-target="#school-results" hx-get="{% url 'account_school_search' %}">
         </div>
         <div id="school-results" class="space-y-2 mt-2"></div>
-      </div> 
+      </div>
     {% else %}
       <form method="post" class="mt-6 space-y-6" enctype="multipart/form-data">
         {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <ul class="text-red-600 list-disc list-inside">
+          {% for err in form.non_field_errors %}<li>{{ err }}</li>{% endfor %}
+        </ul>
+        {% endif %}
 
         <div class="mt-6">
           <label for="school" class="block text-sm font-medium leading-6 text-gray-900">
             Škola
           </label>
           <div class="mt-2">
-            <input type="text" id="school" class="input" value="{{school}}" disabled readonly>
+            <input type="text" id="school" class="input" value="{{ school }}" disabled readonly>
           </div>
           <div id="school-results" class="space-y-2 mt-2"></div>
         </div>
@@ -38,4 +44,4 @@
       </form>
     {% endif %}
   </div>
-{% endblock %}
+{% endblock content %}

@@ -1,3 +1,4 @@
+from datetime import date
 from pathlib import PurePath
 from typing import TYPE_CHECKING
 
@@ -47,12 +48,15 @@ class User(AbstractUser):
             return self.avatar_file.url
         return reverse("profile_avatar", kwargs={"user": self.username})
 
-    def get_current_school_record(self) -> "UserSchoolRecord | None":
-        now = timezone.now()
+    def get_current_school_record(
+        self, at: date | None = None
+    ) -> "UserSchoolRecord | None":
+        if at is None:
+            at = timezone.now()
         try:
             return (
-                self.userschoolrecord_set.filter(start_date__lte=now)
-                .filter(Q(end_date__isnull=True) | Q(end_date__gte=now))
+                self.userschoolrecord_set.filter(start_date__lte=at)
+                .filter(Q(end_date__isnull=True) | Q(end_date__gte=at))
                 .get()
             )
         except ObjectDoesNotExist:

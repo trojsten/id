@@ -3,11 +3,12 @@ from typing import TYPE_CHECKING, Any
 
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
-from django.db import models
+from django.core.exceptions import ValidationError
+from django.db import models, transaction
 from django.db.models import Q
 from django.utils import timezone
 
-from trojstenid.schools.utils import date_to_academic_year
+from trojstenid.schools.utils import academic_year_end, date_to_academic_year
 
 if TYPE_CHECKING:
     from trojstenid.users.models import User
@@ -67,6 +68,30 @@ class UserSchoolRecordManager(models.Manager):
         )
         active_records.update(end_date=end_date - timedelta(days=1))
 
+    @transaction.atomic
+    def end_all_expired(self, academic_year: int) -> int:
+        ayear_end = academic_year_end(academic_year)
+        records = (
+            UserSchoolRecord.objects.filter(start_date__lte=ayear_end)
+            .filter(Q(end_date__isnull=True) | Q(end_date__gt=ayear_end))
+            .select_related("school_type")
+        )
+
+        changed = 0
+        for record in records:
+            record: UserSchoolRecord
+            max_years = len(record.school_type.years) - 1
+            current_year = record.get_current_year(at=ayear_end)
+
+            if current_year >= max_years:
+                end_academic_year = academic_year - (current_year - max_years)
+                record.end_date = academic_year_end(end_academic_year)
+                record.full_clean()
+                record.save()
+                changed += 1
+
+        return changed
+
 
 class UserSchoolRecord(models.Model):
     id: int
@@ -92,14 +117,16 @@ class UserSchoolRecord(models.Model):
         ayear = date_to_academic_year(self.start_date)
         return f"{ayear}/{ayear + 1 % 100}"
 
-    def get_current_year(self) -> int:
+    def get_current_year(self, at: date | None = None) -> int:
+        if at is None:
+            at = timezone.now()
         start_ayear = date_to_academic_year(self.start_date)
-        current_ayear = date_to_academic_year(timezone.now())
+        current_ayear = date_to_academic_year(at)
         return current_ayear - start_ayear + self.start_year
 
-    def get_current_year_display(self) -> str:
+    def get_current_year_display(self, at: date | None = None) -> str:
         years = self.school_type.years
-        current_year = self.get_current_year()
+        current_year = self.get_current_year(at)
         if current_year >= len(years):
             return "?"
         return years[current_year]
@@ -111,6 +138,26 @@ class UserSchoolRecord(models.Model):
         if self.end_date and self.end_date < now:
             return False
         return True
+
+    def clean(self):
+        if self.end_date and self.start_date >= self.end_date:
+            raise ValidationError("Dátum nástupu musí byť skôr ako dátum ukončenia.")
+
+        q = Q(end_date__isnull=True) | Q(end_date__gte=self.start_date)
+        if self.end_date:
+            q &= Q(start_date__lte=self.end_date)
+        collision = self.user.userschoolrecord_set.exclude(id=self.id).filter(q)
+
+        if collision.exists():
+            raise ValidationError("Tento záznam sa prekýva s existujúcim záznamom.")
+
+        if self.end_date:
+            record_length = date_to_academic_year(
+                self.end_date
+            ) - date_to_academic_year(self.start_date)
+            ending_year = self.start_year + record_length
+            if ending_year >= len(self.school_type.years):
+                raise ValidationError("Prekročená doba štúdia.")
 
     def to_dict(self) -> dict[str, Any]:
         return {

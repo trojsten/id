@@ -1,6 +1,7 @@
 from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import QuerySet
 from django.http import HttpResponseRedirect
@@ -53,7 +54,7 @@ class SchoolRecordCreateView(LoginRequiredMixin, FormView):
         end_date = form.cleaned_data["end_date"]
 
         UserSchoolRecord.objects.end_active(self.request.user, start_date)
-        UserSchoolRecord.objects.create(
+        record = UserSchoolRecord(
             user=self.request.user,
             school=self.school,
             start_date=start_date,
@@ -61,6 +62,13 @@ class SchoolRecordCreateView(LoginRequiredMixin, FormView):
             school_type_id=type_id,
             start_year=year,
         )
+        try:
+            record.full_clean()
+        except ValidationError as e:
+            form.add_error(None, e)
+            transaction.set_rollback(True)
+            return self.form_invalid(form)
+        record.save()
 
         return HttpResponseRedirect(reverse("account_school"))
 
