@@ -149,7 +149,7 @@ class UserSchoolRecord(models.Model):
         collision = self.user.userschoolrecord_set.exclude(id=self.id).filter(q)
 
         if collision.exists():
-            raise ValidationError("Tento záznam sa prekýva s existujúcim záznamom.")
+            raise ValidationError("Tento záznam sa prekrýva s existujúcim záznamom.")
 
         if self.end_date:
             record_length = date_to_academic_year(
