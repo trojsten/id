@@ -11,6 +11,29 @@ SCHOOL_DB_URL = (
 )
 
 
+def _get_years_for_type(type_: str) -> list[str]:
+    if type_ == "gym:8":
+        return [
+            "Príma",
+            "Sekunda",
+            "Tercia",
+            "Kvarta",
+            "Kvinta",
+            "Sexta",
+            "Septima",
+            "Oktáva",
+        ]
+
+    if ":" not in type_:
+        return []
+
+    _, length = type_.split(":", 1)
+    if not length.isnumeric():
+        return []
+
+    return [f"{i + 1}. ročník" for i in range(int(length))]
+
+
 @transaction.atomic
 def sync_schools():
     resp = requests.get(SCHOOL_DB_URL)
@@ -32,7 +55,10 @@ def sync_schools():
                 continue
 
             new_type = SchoolType.objects.create(
-                identifier=type_, name=type_, short=type_, years=[]
+                identifier=type_,
+                name=type_,
+                short=type_,
+                years=_get_years_for_type(type_),
             )
             existing_types[type_] = new_type
             real_types.append(new_type)
