@@ -1,5 +1,6 @@
 import csv
 import io
+import warnings
 
 import requests
 from django.db import transaction
@@ -9,6 +10,7 @@ from trojstenid.schools.models import School, SchoolType
 SCHOOL_DB_URL = (
     "https://raw.githubusercontent.com/trojsten/skoly/refs/heads/master/data/final.csv"
 )
+NULL_TYPES = ["zs:9", "ss:4", "gym:8"]
 
 
 def _get_years_for_type(type_: str) -> list[str]:
@@ -32,6 +34,23 @@ def _get_years_for_type(type_: str) -> list[str]:
         return []
 
     return [f"{i + 1}. ročník" for i in range(int(length))]
+
+
+def create_null_school():
+    exists = School.objects.filter(id=-1).exists()
+    if exists:
+        return
+
+    school = School.objects.create(id=-1, name="Iná škola")
+    types = []
+    for null_type in NULL_TYPES:
+        type_ = SchoolType.objects.filter(identifier=null_type).first()
+        if type_ is None:
+            warnings.warn(f"School type {null_type} not found.")
+            continue
+        types.append(type_)
+
+    school.types.set(types)
 
 
 @transaction.atomic
