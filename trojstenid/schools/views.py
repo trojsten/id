@@ -30,7 +30,9 @@ class SchoolRecordCreateView(LoginRequiredMixin, FormView):
         school_id = self.request.GET.get("school_id")
         if not school_id:
             return None
-        if not school_id.isnumeric():
+        try:
+            school_id = int(school_id)
+        except ValueError:
             return None
         return School.objects.filter(id=school_id).first()
 

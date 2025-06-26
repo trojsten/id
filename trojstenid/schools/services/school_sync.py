@@ -30,10 +30,12 @@ def _get_years_for_type(type_: str) -> list[str]:
         return []
 
     _, length = type_.split(":", 1)
-    if not length.isnumeric():
+    try:
+        length = int(length)
+    except ValueError:
         return []
 
-    return [f"{i + 1}. ročník" for i in range(int(length))]
+    return [f"{i + 1}. ročník" for i in range(length)]
 
 
 def create_null_school():

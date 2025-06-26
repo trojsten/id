@@ -49,6 +49,8 @@ class School(models.Model):
         ordering = ["eduid", "name"]
 
     def __str__(self) -> str:
+        if not self.address:
+            return self.name
         return f"{self.name}, {self.address}"
 
     def to_dict(self) -> dict[str, Any]:
