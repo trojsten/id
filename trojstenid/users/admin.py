@@ -3,11 +3,14 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.decorators import login_required
 
+from trojstenid.schools.admin import UserSchoolRecordInline
+
 from .models import User
 
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + ((None, {"fields": ["avatar_file"]}),)  # pyright:ignore
+    inlines = tuple(UserAdmin.inlines) + (UserSchoolRecordInline,)
 
 
 admin.site.register(User, CustomUserAdmin)

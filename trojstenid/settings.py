@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.sites",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     "debug_toolbar",
     "trojstenid.users",
     "trojstenid.profiles",
     "trojstenid.badges",
+    "trojstenid.schools",
     "widget_tweaks",
     "django_recaptcha",
     "allauth",
@@ -159,6 +161,8 @@ SOCIALACCOUNT_FORMS = {
 
 RECAPTCHA_PUBLIC_KEY = env("RECAPTCHA_PUBLIC")
 RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_PRIVATE")
+if DEBUG:
+    SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
 
 OAUTH2_PROVIDER_APPLICATION_MODEL = "users.Application"
 OAUTH2_PROVIDER = {
@@ -171,10 +175,11 @@ OAUTH2_PROVIDER = {
         f"-----BEGIN PRIVATE KEY-----\n{env('OIDC_KEY')}\n-----END PRIVATE KEY-----"
     ),
     "SCOPES": {
-        "openid": "OpenID Connect",
+        "openid": "Prihlásenie cez Trojsten ID",
         "profile": "Základné osobné údaje",
         "email": "E-mailová adresa",
         "groups": "Skupiny",
+        "school_info": "Informácie o tvojej škole",
     },
 }
 

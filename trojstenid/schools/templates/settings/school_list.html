@@ -1,0 +1,43 @@
+{% extends "settings_base.html" %}
+{% load forms %}
+
+{% block title %}Školy - {{ block.super }}{% endblock %}
+
+{% block content %}
+  <div class="mx-auto max-w-2xl">
+    <h2 class="text-xl font-bold text-gray-900">Informácie o školách</h2>
+
+    <form class="mt-6 space-y-6" method="post">
+      {% csrf_token %}
+
+      <div class="rounded-sm border overflow-hidden divide-y">
+        {% for record in object_list %}
+          <div class="p-4 flex justify-between items-center flex-wrap gap-y-2">
+            <div class="flex justify-center flex-col">
+              <div>{{ record.school }}</div>
+              <div class="text-sm text-gray-600">
+                {{ record.start_date }} &mdash; {{ record.end_date|default:"súčasnosť" }},
+                {% if record.is_active %}
+                {{ record.get_current_year_display }},
+                {% endif %}
+                {{ record.school_type }}
+              </div>
+            </div>
+
+            <span class="flex items-center gap-2">
+              {% if record.is_active %}
+                <span class="rounded-md bg-green-50 px-2 py-1 text-xs font-bold text-green-600 ring-1 ring-inset ring-green-500/10">Aktuálna</span>
+              {% endif %}
+            </span>
+          </div>
+        {% empty %}
+          <div class="p-4 text-gray-600 text-sm">Žiadne záznamy.</div>
+        {% endfor %}
+      </div>
+
+      <p class="text-gray-600 text-sm -mt-4">Pre zmenu historických dát kontaktuj <a href="mailto:info@trojsten.sk" class="link">info@trojsten.sk</a>.</p>
+
+      <a href="{% url 'account_school_create' %}" class="btn btn-blue">Zmeniť informácie o škole</a>
+    </form>
+  </div>
+{% endblock %}

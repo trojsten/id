@@ -24,6 +24,7 @@ from trojstenid.users import views
 
 urlpatterns = [
     path("", views.LandingPageView.as_view()),
+    path("", include("trojstenid.schools.urls")),
     path("admin/", admin.site.urls),
     path("profile/", include("trojstenid.profiles.urls")),
     path("accounts/profile/", views.ProfileView.as_view(), name="account_profile"),

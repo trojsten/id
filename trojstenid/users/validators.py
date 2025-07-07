@@ -5,10 +5,14 @@ from trojstenid.users.models import User
 
 class OurOAuth2Validator(OAuth2Validator):
     oidc_claim_scope = OAuth2Validator.oidc_claim_scope
-    oidc_claim_scope.update({"groups": "groups"})
+    oidc_claim_scope.update({"groups": "groups", "school_info": "school_info"})
 
     def get_additional_claims(self, request):
         user: User = request.user
+        school_info = None
+        if record := user.get_current_school_record():
+            school_info = record.to_dict()
+
         return {
             "name": user.get_full_name(),
             "family_name": user.last_name,
@@ -16,6 +20,7 @@ class OurOAuth2Validator(OAuth2Validator):
             "preferred_username": user.username,
             "email": user.email,
             "groups": [g.name for g in user.groups.all()],
+            "school_info": school_info,
         }
 
     def validate_silent_login(self, request):

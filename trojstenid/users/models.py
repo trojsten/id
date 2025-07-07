@@ -1,10 +1,20 @@
-from os import path
+from datetime import date
+from pathlib import PurePath
+from typing import TYPE_CHECKING
 
 from django.contrib.auth.models import AbstractUser, Group
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
+from django.utils import timezone
 from oauth2_provider.models import AbstractApplication
 from ulid import ULID
+
+if TYPE_CHECKING:
+    from django.db.models.manager import RelatedManager
+
+    from trojstenid.schools.models import UserSchoolRecord
 
 
 class Application(AbstractApplication):
@@ -12,7 +22,7 @@ class Application(AbstractApplication):
 
 
 def user_avatar_name(user, filename):
-    _, ext = path.splitext(filename)
+    ext = PurePath(filename).suffix
     return f"avatars/{ULID()}{ext}"
 
 
@@ -30,9 +40,24 @@ class ImageField(models.ImageField):
 
 class User(AbstractUser):
     avatar_file = ImageField(upload_to=user_avatar_name, blank=True)
+    userschoolrecord_set: "RelatedManager[UserSchoolRecord]"
 
     @property
     def avatar(self):
         if self.avatar_file:
             return self.avatar_file.url
         return reverse("profile_avatar", kwargs={"user": self.username})
+
+    def get_current_school_record(
+        self, at: date | None = None
+    ) -> "UserSchoolRecord | None":
+        if at is None:
+            at = timezone.now()
+        try:
+            return (
+                self.userschoolrecord_set.filter(start_date__lte=at)
+                .filter(Q(end_date__isnull=True) | Q(end_date__gte=at))
+                .get()
+            )
+        except ObjectDoesNotExist:
+            return None
