@@ -923,7 +923,7 @@ msgid ""
 "an account with email %(email)s. However, we do not have any record of such "
 "an account in our database."
 msgstr ""
-"Tento e-mail si dostal/a, pretože si sa ty, alebo niekto iný pokúsil "
+"Tento e-mail si dostal/a, pretože si sa ty, alebo niekto iný, pokúsil "
 "pristúpiť k účtu s e-mailovou adresou %(email)s. Avšak, neevidujeme žiaden "
 "účet s danou adresou v našom systéme."
 
