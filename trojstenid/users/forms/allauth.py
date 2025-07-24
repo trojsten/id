@@ -31,7 +31,12 @@ class SignupMixin(RemovePlaceholdersMixin, forms.Form):
 
 
 class OurSignupForm(SignupMixin, SignupForm):
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields[
+            "password1"
+        ].help_text = "Tvoje heslo musí obsahovať aspoň 8 znakov."
 
 
 class OurSocialSignupForm(SignupMixin, SocialSignupForm):
