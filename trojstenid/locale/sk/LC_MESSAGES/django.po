@@ -75,7 +75,7 @@ msgstr "Používateľ s týmto telefónnym číslom už existuje."
 
 #: account/adapter.py:76
 msgid "Too many failed login attempts. Try again later."
-msgstr "Príliš veľa neúspešných pokusov o prihlásenie. Skús to neskôr."
+msgstr "Príliš veľa neúspešných pokusov o prihlásenie. Skús to znova neskôr."
 
 #: account/adapter.py:78
 msgid "The email address is not assigned to any user account."
@@ -93,7 +93,7 @@ msgstr "Primárna e-mailová adresa musí byť overená."
 
 #: account/adapter.py:82
 msgid "Username can not be used. Please use other username."
-msgstr "Používateľské meno nemôže byť použité. Prosím, použi iné meno."
+msgstr "Používateľské meno nemôže byť použité. Použi prosím iné meno."
 
 #: account/adapter.py:85
 msgid "The username and/or password you specified are not correct."
@@ -290,7 +290,7 @@ msgstr "Aplikácia bez rozhrania (headless)"
 
 #: idp/oidc/adapter.py:30
 msgid "View your user ID"
-msgstr "Zobraziť identifikátor používateľa"
+msgstr "Zobraziť tvoj identifikátor používateľa"
 
 #: idp/oidc/adapter.py:31
 msgid "View your email address"
@@ -421,7 +421,7 @@ msgstr "MFA"
 
 #: mfa/models.py:24
 msgid "Recovery codes"
-msgstr "Kódy obnovy"
+msgstr "Záložné kódy"
 
 #: mfa/models.py:25
 msgid "TOTP Authenticator"
@@ -552,7 +552,7 @@ msgstr "token"
 #: socialaccount/models.py:162
 msgid "\"oauth_token\" (OAuth1) or access token (OAuth2)"
 msgstr ""
-"\"Oauth_token\" (Podpora protokolu OAuth1) alebo prístup tokenu (OAuth2)"
+"\"oauth_token\" (Podpora protokolu OAuth1) alebo prístupový token (OAuth2)"
 
 #: socialaccount/models.py:166
 msgid "token secret"
@@ -561,12 +561,12 @@ msgstr "heslo prístupového tokenu"
 #: socialaccount/models.py:167
 msgid "\"oauth_token_secret\" (OAuth1) or refresh token (OAuth2)"
 msgstr ""
-"\"Oauth_token_secret\" (Podpora protokolu OAuth1) alebo token obnovenie "
+"\"oauth_token_secret\" (Podpora protokolu OAuth1) alebo token obnovenia "
 "(OAuth2)"
 
 #: socialaccount/models.py:170
 msgid "expires at"
-msgstr "vyexpiruje"
+msgstr "expiruje"
 
 #: socialaccount/models.py:175
 msgid "social application token"
@@ -892,7 +892,7 @@ msgid ""
 msgstr ""
 "Tento e-mail si dostal/a, pretože niekto požiadal o heslo k tvojmu "
 "používateľskému účtu.\n"
-"Ak si to nebol ty, správu môžeš pokojne ignorovať. Kliknutím na odkaz "
+"Ak si to nebol ty, túto správu môžeš pokojne ignorovať. Kliknutím na odkaz "
 "nižšie obnovíš svoje heslo."
 
 #: templates/account/email/password_reset_key_message.txt:9
@@ -1039,17 +1039,17 @@ msgstr "Overovací e-mail poslaný na %(email)s."
 #: templates/account/messages/email_confirmed.txt:2
 #, python-format
 msgid "You have confirmed %(email)s."
-msgstr "%(email)s potvrdené."
+msgstr "Úspešne si potvrdil/a %(email)s."
 
 #: templates/account/messages/email_deleted.txt:2
 #, python-format
 msgid "Removed email address %(email)s."
-msgstr "E-mailová adresa %(email)s úpešne odstránená."
+msgstr "E-mailová adresa %(email)s úspešne odstránená."
 
 #: templates/account/messages/logged_in.txt:4
 #, python-format
 msgid "Successfully signed in as %(name)s."
-msgstr "Úspešne si sa prihlásil ako %(name)s."
+msgstr "Úspešne si sa prihlásil/a ako %(name)s."
 
 #: templates/account/messages/logged_out.txt:2
 msgid "You have signed out."
@@ -1066,7 +1066,7 @@ msgstr "Zmena hesla prebehla úspešne."
 
 #: templates/account/messages/password_set.txt:2
 msgid "Password successfully set."
-msgstr ")Nastavenie hesla bolo úspešné."
+msgstr "Nastavenie hesla bolo úspešné."
 
 #: templates/account/messages/phone_verification_sent.txt:2
 #, python-format
@@ -1108,7 +1108,7 @@ msgstr ""
 
 #: templates/account/password_reset.html:26
 msgid "Reset My Password"
-msgstr "Obnov moje heslo"
+msgstr "Obnoviť moje heslo"
 
 #: templates/account/password_reset.html:31
 msgid "Please contact us if you have any trouble resetting your password."
@@ -1211,7 +1211,7 @@ msgstr "Registrácia uzavretá"
 
 #: templates/account/signup_closed.html:12
 msgid "We are sorry, but the sign up is currently closed."
-msgstr "Ospravedlňujeme sa, ale registrácia je momentálne uzavretá."
+msgstr "Ospravedlňujeme sa, ale registrácia je momentálne vypnutá."
 
 #: templates/account/snippets/already_logged_in.html:7
 msgid "Note"
@@ -1231,7 +1231,7 @@ msgid ""
 "You currently do not have any email address set up. You should really add an "
 "email address so you can receive notifications, reset your password, etc."
 msgstr ""
-"Momentálne nemáš nastavený žiaden e-mail. Pridaj si e-mailovú adresu, aby si mohol/la dostávať oznámenia, obnoviť zabudnuté heslo atď."
+"Momentálne nemáš nastavený žiaden e-mail. Pridaj si e-mailovú adresu, aby si mohol/la dostávať oznámenia, obnoviť zabudnuté heslo, atď."
 
 #: templates/account/verification_sent.html:5
 #: templates/account/verification_sent.html:9
@@ -1478,7 +1478,7 @@ msgstr "Pridať"
 #: templates/mfa/recovery_codes/generate.html:6
 #: templates/mfa/recovery_codes/index.html:6
 msgid "Recovery Codes"
-msgstr "Kódy obnovy"
+msgstr "Záložné kódy"
 
 #: templates/mfa/index.html:82 templates/mfa/recovery_codes/index.html:9
 #, python-format
@@ -1488,20 +1488,20 @@ msgid_plural ""
 "There are %(unused_count)s out of %(total_count)s recovery codes available."
 msgstr[0] ""
 "Je k dispozícii %(unused_count)s kódov z celkového počtu %(total_count)s "
-"kódov obnovy."
+"záložných kódov."
 msgstr[1] ""
-"Je k dispozícii %(unused_count)s kód z celkového počtu %(total_count)s kódov "
-"obnovy."
+"Je k dispozícii %(unused_count)s kód z celkového počtu %(total_count)s záložných "
+"kódov."
 msgstr[2] ""
 "Je k dispozícii %(unused_count)s kódov z celkového počtu %(total_count)s "
-"kódov obnovy."
+"záložných kódov."
 msgstr[3] ""
 "Je k dispozícii %(unused_count)s kódu z celkového počtu %(total_count)s "
-"kódov obnovy."
+"záložných kódov."
 
 #: templates/mfa/index.html:86
 msgid "No recovery codes set up."
-msgstr "Nie sú nastavené žiadne kódy obnovy."
+msgstr "Nie sú nastavené žiadne záložné kódy."
 
 #: templates/mfa/index.html:96
 msgid "View"
@@ -1517,7 +1517,7 @@ msgstr "Generovať"
 
 #: templates/mfa/messages/recovery_codes_generated.txt:2
 msgid "A new set of recovery codes has been generated."
-msgstr "Boli vygenerované nové kódy obnovy."
+msgstr "Boli vygenerované nové záložné kódy."
 
 #: templates/mfa/messages/webauthn_added.txt:2
 msgid "Security key added."
@@ -1533,7 +1533,7 @@ msgstr "Zadaj kód z autentifikátora:"
 
 #: templates/mfa/recovery_codes/generate.html:9
 msgid "You are about to generate a new set of recovery codes for your account."
-msgstr "Chystáš sa vygenerovať nové kódy obnovy pre tvoj účet."
+msgstr "Chystáš sa vygenerovať nové záložné kódy pre tvoj účet."
 
 #: templates/mfa/recovery_codes/generate.html:11
 msgid "This action will invalidate your existing codes."
@@ -1579,7 +1579,7 @@ msgid ""
 "You can store this secret and use it to reinstall your authenticator app at "
 "a later time."
 msgstr ""
-"Môžeš toto heslo uložiť a kedykoľvek ho použiť na preinštalovanie "
+"Toto heslo môžeš uložiť a kedykoľvek ho použiť na preinštalovanie "
 "autentifikačnej aplikaćie."
 
 #: templates/mfa/totp/deactivate_form.html:5
@@ -1720,7 +1720,7 @@ msgstr "Účet tretej strany %(provider)s bol priradený do tvojho účtu."
 
 #: templates/socialaccount/email/account_connected_subject.txt:3
 msgid "Third-Party Account Connected"
-msgstr "Exetrný účet pripojený"
+msgstr "Externý účet pripojený"
 
 #: templates/socialaccount/email/account_disconnected_message.txt:4
 #, python-format
