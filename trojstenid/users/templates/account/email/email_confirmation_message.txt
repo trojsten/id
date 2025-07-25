@@ -3,4 +3,4 @@
 
 {% block content %}{% user_display user as user_display %}Tento e-mail ti posielame, nakoľko používateľ {{ user_display }} uviedol túto e-mailovú adresu pri registrácií do Trojsten ID.
 
-Pre potvrdenie tejto e-mailovej adresy klikni na nasledujúci odkaz: {{ activate_url }}{% endblock %}
+Pre potvrdenie tejto e-mailovej adresy klikni na nasledujúci odkaz: {{ activate_url }}{% endblock content %}

@@ -22,13 +22,13 @@ class AvatarView(TemplateView):
         return super().get(request, *args, **kwargs)
 
     def get_text_color(self, background: str) -> str:
-        r, g, b = ImageColor.getrgb(background)
+        r, g, b, *_ = ImageColor.getrgb(background)
         return "#000000" if (r * 0.299 + g * 0.587 + b * 0.114) > 150 else "#ffffff"
 
     def get_context_data(self, **kwargs):
         initials = "".join([x[0] for x in self._user.get_full_name().split()]).upper()
         ctx = super().get_context_data(**kwargs)
-        hue = random.Random(self._user.id).randint(0, 360)
+        hue = random.Random(self._user.id).randint(0, 360)  # noqa: S311
         background = ImageColor.getrgb(f"hsl({hue}, 100%, 60%)")
         background = "#" + "".join([f"{x:02x}" for x in background])
 

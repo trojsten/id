@@ -6,7 +6,6 @@ import trojstenid.users.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("users", "0003_user_avatar_file"),
     ]

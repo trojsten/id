@@ -1,1 +1,1 @@
-E-mailová adresa {{email}} bola odstránená.
+E-mailová adresa {{ email }} bola odstránená.

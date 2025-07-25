@@ -25,7 +25,7 @@
             Univerzita Komenského
         </button>
     </form>
-    
+
     <form method="POST" action="{% provider_login_url 'trojsten-login' process=process %}">
         {% csrf_token %}
         {% if redirect_field_value %}
