@@ -1,1 +1,1 @@
-E-mailová adresa {{email}} bola overená.
+E-mailová adresa {{ email }} bola overená.

@@ -14,4 +14,3 @@ def academic_year_start(year: int) -> date:
 
 def academic_year_end(year: int) -> date:
     return date(year + 1, 8, 31)
-

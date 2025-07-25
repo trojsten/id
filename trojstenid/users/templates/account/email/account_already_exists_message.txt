@@ -7,4 +7,4 @@
 Účet používajúci túto e-mailovú adresu už ale existuje.
 V prípade, že si na to zabudol/zabudla, použi na obnovenie svojho účtu nasledujúci postup:
 
-{{ password_reset_url }}{% endblock %}
+{{ password_reset_url }}{% endblock content %}

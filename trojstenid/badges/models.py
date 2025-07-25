@@ -4,6 +4,8 @@ from django.db.models import UniqueConstraint
 
 
 class BadgeGroup(models.Model):
+    id: int
+
     title = models.CharField(max_length=100)
 
     class Meta:
@@ -14,6 +16,8 @@ class BadgeGroup(models.Model):
 
 
 class Badge(models.Model):
+    id: int
+
     image = models.ImageField()
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
@@ -28,6 +32,8 @@ class Badge(models.Model):
 
 
 class BadgeAssignment(models.Model):
+    id: int
+
     badge = models.ForeignKey(Badge, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -36,3 +42,6 @@ class BadgeAssignment(models.Model):
         constraints = [
             UniqueConstraint("badge", "user", name="badge_assignment__unique"),
         ]
+
+    def __str__(self):
+        return f"{self.user} - {self.badge}"

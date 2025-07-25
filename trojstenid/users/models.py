@@ -39,6 +39,8 @@ class ImageField(models.ImageField):
 
 
 class User(AbstractUser):
+    id: int
+
     avatar_file = ImageField(upload_to=user_avatar_name, blank=True)
     userschoolrecord_set: "RelatedManager[UserSchoolRecord]"
 

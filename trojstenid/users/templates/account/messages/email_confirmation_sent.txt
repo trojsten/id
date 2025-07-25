@@ -1,1 +1,1 @@
-Overovací e-mail na adresu {{email}} bolo odoslaný.
+Overovací e-mail na adresu {{ email }} bolo odoslaný.

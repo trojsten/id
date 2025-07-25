@@ -33,7 +33,7 @@
 }
 
 .btn {
-    @apply flex w-full;
+    @apply flex w-full cursor-pointer;
 }
 
 .btn-blue {
@@ -53,11 +53,11 @@
 }
 
 .input-checkbox {
-    @apply h-4 w-4 rounded-sm border-gray-300 text-blue-500 focus:ring-blue-500;
+    @apply h-4 w-4 rounded-sm border-gray-300 text-blue-500 cursor-pointer focus:ring-blue-500;
 }
 
 .input-radio {
-    @apply h-4 w-4 rounded-full border-gray-300 text-blue-500 focus:ring-blue-500;
+    @apply h-4 w-4 rounded-full border-gray-300 text-blue-500 cursor-pointer focus:ring-blue-500;
 }
 
 [x-cloak] {

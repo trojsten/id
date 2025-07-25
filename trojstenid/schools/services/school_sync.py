@@ -57,7 +57,7 @@ def create_null_school():
 
 @transaction.atomic
 def sync_schools():
-    resp = requests.get(SCHOOL_DB_URL)
+    resp = requests.get(SCHOOL_DB_URL, timeout=60)
     resp.raise_for_status()
 
     reader = csv.DictReader(io.StringIO(resp.text))
