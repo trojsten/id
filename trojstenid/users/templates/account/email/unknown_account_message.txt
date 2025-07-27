@@ -7,4 +7,4 @@ Tento e-mail môžeš ignorovať, ak si nepožiadal o obnovenie hesla.
 
 Ak si to bol ty, môžeš si zaregistrovať účet pomocou linku nižšie.
 
-{{ signup_url }}{% endblock %}
+{{ signup_url }}{% endblock content %}

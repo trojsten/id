@@ -11,26 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
     - uses: actions/setup-python@v5
       with:
         python-version: '3.12'
+
     - uses: pre-commit/action@v3.0.1
 
   migrations:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-        cache: "pipenv"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
+
     - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pipenv
-        pipenv sync
+      run: uv sync --locked
+
     - name: Test for missing migrations
-      run: pipenv run python manage.py makemigrations --check
+      run: uv run python manage.py makemigrations --check
       env:
         DEBUG: True
         DATABASE_URL: "sqlite://:memory:"
@@ -39,4 +39,3 @@ jobs:
         RECAPTCHA_PUBLIC: ""
         RECAPTCHA_PRIVATE: ""
         OIDC_KEY: ""
-

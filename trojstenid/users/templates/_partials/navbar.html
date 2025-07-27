@@ -1,5 +1,4 @@
-{% load settings %}
-{% load static %}
+{% load settings static %}
 <div class="flex py-5 shrink-0 items-center justify-center bg-trojsten -mx-6">
     <img class="h-12 w-auto" src="{% static "logo.svg" %}" alt="Trojsten">
 </div>
@@ -20,7 +19,7 @@
                 </div>
                 <form action="{% url "account_logout" %}" method="post" class="ml-auto">
                     {% csrf_token %}
-                    <button type="submit" class="text-red-600 p-1.5 hover:bg-red-700 hover:text-white inline-flex rounded-sm">
+                    <button type="submit" class="text-red-600 p-1.5 hover:bg-red-700 hover:text-white inline-flex rounded-sm cursor-pointer">
                         <span data-icon="mdi:logout" class="iconify h-6 w-6"></span>
                     </button>
                 </form>

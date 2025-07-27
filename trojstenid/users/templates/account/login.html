@@ -1,7 +1,5 @@
 {% extends "auth_base.html" %}
-{% load socialaccount %}
-{% load widget_tweaks %}
-{% load forms %}
+{% load forms socialaccount widget_tweaks %}
 
 {% block title %}Prihlásiť sa - {{ block.super }}{% endblock %}
 
@@ -57,4 +55,4 @@
         Nemáš účet?
         <a href="{% url "account_signup" %}" class="font-semibold link">Zaregistruj sa</a>
     </p>
-{% endblock %}
+{% endblock content %}
