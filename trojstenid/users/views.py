@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import TemplateView, UpdateView
 from oauth2_provider.views import AuthorizationView
@@ -17,7 +16,7 @@ class TrojstenAuthorizationView(AuthorizationView):
 
         if application.group:
             if not request.user.is_authenticated:
-                raise PermissionDenied()
+                return self.handle_no_permission()
 
             if not request.user.groups.contains(application.group):
                 return render(
