@@ -12,6 +12,7 @@ from oauth2_provider.models import AbstractApplication
 from ulid import ULID
 
 if TYPE_CHECKING:
+    from allauth.account.models import EmailAddress
     from django.db.models.manager import RelatedManager
 
     from trojstenid.schools.models import UserSchoolRecord
@@ -43,6 +44,7 @@ class User(AbstractUser):
 
     avatar_file = ImageField(upload_to=user_avatar_name, blank=True)
     userschoolrecord_set: "RelatedManager[UserSchoolRecord]"
+    emailaddress_set: "RelatedManager[EmailAddress]"
 
     @property
     def avatar(self):
