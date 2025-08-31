@@ -4,60 +4,60 @@
 {% block title %}Prihlásiť sa - {{ block.super }}{% endblock %}
 
 {% block content %}
-    <h2 class="mb-6 text-center text-2xl font-bold tracking-tight text-gray-900">
-        Prihlásenie do Trojsten ID
-    </h2>
+  <h2 class="mb-6 text-center text-2xl font-bold tracking-tight text-gray-900">
+    Prihlásenie do Trojsten ID
+  </h2>
 
-    <div class="rounded-md bg-red-50 p-4 my-6 flex">
-        <span data-icon="mdi:account-reactivate" class="iconify text-red-400 h-5 w-5 shrink-0"></span>
-        <p class="text-sm text-red-800 ml-3">Ak si mal/a účet na starých Trojsten stránkach, klikni dolu na "starý Trojsten Login".</p>
-    </div>
+  <div class="rounded-md bg-red-50 p-4 my-6 flex">
+    <span data-icon="mdi:account-reactivate" class="iconify text-red-400 h-5 w-5 shrink-0"></span>
+    <p class="text-sm text-red-800 ml-3">Ak si mal/a účet na starých Trojsten stránkach, klikni dolu na "starý Trojsten Login".</p>
+  </div>
 
-    <form class="space-y-6" method="POST">
-        {% csrf_token %}
-        {% input form.login %}
-
-        <div>
-            <div class="flex items-center justify-between">
-                <label for="{{ form.password.id_for_label }}"
-                       class="block text-sm font-medium leading-6 text-gray-900">Heslo</label>
-
-                <div class="text-sm leading-6">
-                    <a href="{% url "account_reset_password" %}" class="font-semibold link">Zabudnuté heslo?</a>
-                </div>
-            </div>
-
-            <div class="mt-2">
-                {% render_field form.password class+="input" %}
-            </div>
-        </div>
-
-        {% input form.remember %}
-
-        {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-        {% endif %}
-
-        <div>
-            <button type="submit" class="btn btn-blue">Prihlásiť sa</button>
-        </div>
-    </form>
+  <form class="space-y-6" method="POST">
+    {% csrf_token %}
+    {% input form.login %}
 
     <div>
-        <div class="relative mt-10">
-            <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                <div class="w-full border-t border-gray-200"></div>
-            </div>
-            <div class="relative flex justify-center text-sm font-medium leading-6">
-                <span class="bg-white px-6 text-gray-900">Alebo prihlásiť pomocou</span>
-            </div>
-        </div>
+      <div class="flex items-center justify-between">
+        <label for="{{ form.password.id_for_label }}"
+                class="block text-sm font-medium leading-6 text-gray-900">Heslo</label>
 
-        {% include "socialaccount/partials/providers.html" with process="login" %}
+        <div class="text-sm leading-6">
+          <a href="{% url "account_reset_password" %}" class="font-semibold link">Zabudnuté heslo?</a>
+        </div>
+      </div>
+
+      <div class="mt-2">
+        {% render_field form.password class+="input" %}
+      </div>
     </div>
 
-    <p class="mt-10 text-center text-sm text-gray-500">
-        Nemáš účet?
-        <a href="{% url "account_signup" %}" class="font-semibold link">Zaregistruj sa</a>
-    </p>
+    {% input form.remember %}
+
+    {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+    {% endif %}
+
+    <div>
+      <button type="submit" class="btn btn-blue">Prihlásiť sa</button>
+    </div>
+  </form>
+
+  <div>
+    <div class="relative mt-10">
+      <div class="absolute inset-0 flex items-center" aria-hidden="true">
+        <div class="w-full border-t border-gray-200"></div>
+      </div>
+      <div class="relative flex justify-center text-sm font-medium leading-6">
+        <span class="bg-white px-6 text-gray-900">Alebo prihlásiť pomocou</span>
+      </div>
+    </div>
+
+    {% include "socialaccount/partials/providers.html" with process="login" %}
+  </div>
+
+  <p class="mt-10 text-center text-sm text-gray-500">
+    Nemáš účet?
+    <a href="{% url "account_signup" %}" class="font-semibold link">Zaregistruj sa</a>
+  </p>
 {% endblock content %}
