@@ -8,6 +8,11 @@
         Prihlásenie do Trojsten ID
     </h2>
 
+    <div class="rounded-md bg-red-50 p-4 my-6 flex">
+        <span data-icon="mdi:account-reactivate" class="iconify text-red-400 h-5 w-5 shrink-0"></span>
+        <p class="text-sm text-red-800 ml-3">Ak si mal/a účet na starých Trojsten stránkach, klikni dolu na "starý Trojsten Login".</p>
+    </div>
+
     <form class="space-y-6" method="POST">
         {% csrf_token %}
         {% input form.login %}
