@@ -49,7 +49,7 @@ dev = [
 ]
 
 [tool.bumpver]
-current_version = "2025.6"
+current_version = "2025.7"
 version_pattern = "YYYY.INC1"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true
