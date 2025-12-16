@@ -2,6 +2,7 @@ from io import BytesIO
 
 from django import forms
 from django.core.exceptions import ValidationError
+from django.core.files.base import ContentFile
 from django.core.files.images import get_image_dimensions
 from PIL import Image
 from PIL.Image import Resampling
@@ -25,6 +26,12 @@ class ProfileForm(forms.ModelForm):
             if w > 1000:
                 img = Image.open(avatar).convert("RGB")
                 img.thumbnail((1000, 1000), Resampling.BILINEAR)
-                avatar.file = BytesIO()
-                img.save(avatar.file, "jpeg")
+
+                buffer = BytesIO()
+                img.save(buffer, "jpeg")
+                buffer.seek(0)
+
+                name = avatar.name.rsplit(".", 1)[0] + ".jpeg"
+                return ContentFile(buffer.read(), name=name)
+
         return avatar
