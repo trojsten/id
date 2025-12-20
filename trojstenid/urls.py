@@ -30,6 +30,7 @@ urlpatterns = [
     path("accounts/profile/", views.ProfileView.as_view(), name="account_profile"),
     path("accounts/", include("allauth.urls")),
     path("oauth/", include("trojstenid.users.urls_oauth", namespace="oauth2_provider")),
+    path("api/", include("trojstenid.users.urls_api", namespace="api")),
 ]
 
 if settings.DEBUG:
