@@ -1,5 +1,6 @@
 from allauth.account.models import EmailAddress
 from django.contrib.auth.models import Group
+from django.urls import reverse
 from rest_framework import serializers
 
 from trojstenid.users.models import User
@@ -22,6 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
         slug_field="name", many=True, queryset=Group.objects.get_queryset()
     )
     emails = EmailAddressSerializer(many=True, source="emailaddress_set")
+    avatar = serializers.SerializerMethodField()
 
     class Meta:  # type:ignore
         model = User
@@ -44,6 +46,9 @@ class UserSerializer(serializers.ModelSerializer):
     def get_current_school_record(self, obj):
         record = obj.get_current_school_record()
         return UserSchoolRecordSerializer(record).data if record else None
+
+    def get_avatar(self, obj):
+        return reverse("profile_avatar", kwargs={"user": obj.username})
 
 
 class UserListSerializer(UserSerializer):
