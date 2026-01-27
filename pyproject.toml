@@ -22,6 +22,8 @@ dependencies = [
     "psycopg[binary]~=3.2.7",
     "django-types~=0.20.0",
     "django-ipware~=7.0.1",
+    "djangorestframework>=3.16.1",
+    "djangorestframework-stubs>=3.16.6",
 ]
 
 [tool.ruff.lint]
