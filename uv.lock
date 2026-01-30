@@ -784,6 +784,7 @@ dependencies = [
     { name = "pillow" },
     { name = "psycopg", extra = ["binary"] },
     { name = "python-ulid" },
+    { name = "requests" },
     { name = "sentry-sdk" },
 ]
 
@@ -814,6 +815,7 @@ requires-dist = [
     { name = "pillow", specifier = "~=11.2.1" },
     { name = "psycopg", extras = ["binary"], specifier = "~=3.2.7" },
     { name = "python-ulid", specifier = "~=3.0.0" },
+    { name = "requests", specifier = ">=2.32.4" },
     { name = "sentry-sdk", specifier = "~=2.27.0" },
 ]
 
