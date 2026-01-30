@@ -9,11 +9,13 @@ from django.contrib.auth.signals import (
 from django.contrib.auth.signals import (
     user_logged_out as dj_user_logged_out,
 )
+from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
 from oauth2_provider.signals import app_authorized
 
 from trojstenid import audit
 from trojstenid.users.models import User
+from trojstenid.users.tasks import send_user_update
 
 logger = logging.getLogger(__name__)
 
@@ -56,3 +58,20 @@ def log_app_authorization(sender, request, token, **kwargs):
         f"application {token.application.name} was authorized for "
         f"user {token.user.username}",
     )
+
+
+@receiver(post_save, sender=User)
+def user_saved(sender, instance: User, **kwargs):
+    send_user_update.delay(instance.id)
+
+
+@receiver(post_save, sender=EmailAddress)
+def emailaddress_saved(sender, instance: EmailAddress, **kwargs):
+    send_user_update.delay(instance.user_id)  # type:ignore
+
+
+@receiver(m2m_changed, sender=User.groups.through)
+def groups_changed(sender, instance, **kwargs):
+    if not isinstance(instance, User):
+        return
+    send_user_update.delay(instance.id)

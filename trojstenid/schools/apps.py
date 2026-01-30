@@ -6,3 +6,6 @@ class SchoolsConfig(AppConfig):
     name = "trojstenid.schools"
     label = "trojstenid_schools"
     verbose_name = "Schools"
+
+    def ready(self):
+        from . import signals  # noqa
