@@ -31,6 +31,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("oauth/", include("trojstenid.users.urls_oauth", namespace="oauth2_provider")),
     path("api/", include("trojstenid.users.urls_api", namespace="api")),
+    path("django-rq/", include("django_rq.urls")),
 ]
 
 if settings.DEBUG:

@@ -24,6 +24,8 @@ dependencies = [
     "django-ipware~=7.0.1",
     "djangorestframework>=3.16.1",
     "djangorestframework-stubs>=3.16.6",
+    "django-rq>=3.2.2",
+    "environs[django]>=14.5.0",
 ]
 
 [tool.ruff.lint]

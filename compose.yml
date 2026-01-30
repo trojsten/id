@@ -32,5 +32,8 @@ services:
       - ./trojstenid:/app/trojstenid/
     tty: true
 
+  redis:
+    image: redis
+
 volumes:
   postgres_data:
