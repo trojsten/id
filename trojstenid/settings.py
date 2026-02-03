@@ -12,11 +12,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
-import environ
+from environs import Env
 
 import trojstenid
 
-env = environ.Env()
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +30,7 @@ DEBUG = env("DEBUG", default=False)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_HSTS_SECONDS = 3600
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS", default=[])
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
 # Application definition
 
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
     "oauth2_provider",
     "django_cleanup",
     "django_probes",
+    "django_rq",
 ]
 
 MIDDLEWARE = [
@@ -99,7 +101,7 @@ SITE_ID = 1
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db(),
+    "default": env.dj_db_url("DATABASE_URL"),
 }
 
 # Password validation
@@ -186,7 +188,7 @@ OAUTH2_PROVIDER = {
     },
 }
 
-vars().update(env.email(default="consolemail://"))
+vars().update(env.dj_email_url("EMAIL_URL", default="consolemail://"))
 DEFAULT_FROM_EMAIL = env("EMAIL_FROM", default="root@localhost")
 
 # Internationalization
@@ -245,6 +247,14 @@ LOGGING = {
             "handlers": ["console"],
             "level": "INFO",
         },
+    },
+}
+
+RQ_QUEUES = {
+    "default": {
+        "HOST": env("REDIS_HOST", default="redis"),
+        "PORT": 6379,
+        "ASYNC": not DEBUG,
     },
 }
 

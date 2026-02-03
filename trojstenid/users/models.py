@@ -20,6 +20,7 @@ if TYPE_CHECKING:
 
 class Application(AbstractApplication):
     group = models.ForeignKey(Group, on_delete=models.RESTRICT, blank=True, null=True)
+    push_urls = models.TextField(blank=True)
 
 
 def user_avatar_name(user, filename):
