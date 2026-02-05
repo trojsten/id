@@ -1,13 +1,16 @@
+import re
 from datetime import date
 from pathlib import PurePath
 from typing import TYPE_CHECKING
 
 from django.contrib.auth.models import AbstractUser, Group
+from django.core import validators
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.deconstruct import deconstructible
 from oauth2_provider.models import AbstractApplication
 from ulid import ULID
 
@@ -38,6 +41,16 @@ class ImageField(models.ImageField):
 
     def get_db_converters(self, connection):
         return []
+
+
+@deconstructible()
+class UsernameValidator(validators.RegexValidator):
+    regex = r"^[\w.-]+\Z"
+    message = "Používateľské meno môže obsahovať len písmená, čísla a znaky ./-/_"
+    flags = re.ASCII
+
+
+username_validators = [UsernameValidator()]
 
 
 class User(AbstractUser):
