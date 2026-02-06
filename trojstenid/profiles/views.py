@@ -15,7 +15,9 @@ class AvatarView(TemplateView):
     content_type = "image/svg+xml"
 
     def get(self, request, *args, **kwargs):
-        self._user: User = get_object_or_404(User, username=kwargs["user"])
+        self._user: User = get_object_or_404(
+            User, username=kwargs["user"], is_active=True
+        )
         if self._user.avatar_file:
             return HttpResponseRedirect(self._user.avatar_file.url)
 
@@ -42,7 +44,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
     template_name = "profile/profile.html"
 
     def get_object(self, queryset=None):
-        return get_object_or_404(User, username=self.kwargs["user"])
+        return get_object_or_404(User, username=self.kwargs["user"], is_active=True)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
