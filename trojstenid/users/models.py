@@ -44,6 +44,11 @@ class User(AbstractUser):
     id: int
 
     avatar_file = ImageField(upload_to=user_avatar_name, blank=True)
+    now_known_as = models.ForeignKey(
+        "users.User", on_delete=models.CASCADE, null=True, blank=True
+    )
+    now_known_as_id: int
+
     userschoolrecord_set: "RelatedManager[UserSchoolRecord]"
     emailaddress_set: "RelatedManager[EmailAddress]"
 
