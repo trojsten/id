@@ -41,6 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
             "current_school_record",
             "groups",
             "emails",
+            "now_known_as",
         ]
 
     def get_current_school_record(self, obj):
