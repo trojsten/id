@@ -41,7 +41,7 @@ def merge_user_into(user: User, into: User):
     The old `user` should be considered destroyed and never to be touched again.
     It may or may not contain data, or the data contained within can be incomplete.
     """
-    if user.id == into.id:
+    if user.id == into.id or not user.is_active or not into.is_active:
         return
 
     logger.info(f"Merging user {user.id} -> {into.id}.")
