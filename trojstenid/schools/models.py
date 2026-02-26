@@ -56,7 +56,7 @@ class School(models.Model):
     def to_dict(self) -> dict[str, Any]:
         return {
             "id": self.id,
-            "eduid": self.eduid,
+            "eduid": self.eduid if self.eduid is not None else -self.id,
             "name": self.name,
             "address": self.address,
             "types": [t.identifier for t in self.types.all()],
