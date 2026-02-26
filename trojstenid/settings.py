@@ -142,6 +142,7 @@ ACCOUNT_FORMS = {
     "reset_password_from_key": "trojstenid.users.forms.allauth.OurResetPasswordKeyForm",
     "set_password": "trojstenid.users.forms.allauth.OurSetPasswordForm",
 }
+ACCOUNT_USERNAME_VALIDATORS = "trojstenid.users.models.username_validators"
 
 SOCIALACCOUNT_PROVIDERS = {
     "openid_connect": {
