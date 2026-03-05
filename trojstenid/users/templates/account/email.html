@@ -12,12 +12,12 @@
             {% csrf_token %}
 
             <div class="rounded-sm border overflow-hidden divide-y">
-                {% for emailaddress in user.emailaddress_set.all %}
+                {% for emailaddress in emailaddresses %}
                     <label for="email_radio_{{ forloop.counter }}"
                            class="p-4 flex justify-between items-center flex-wrap gap-y-2">
                         <span class="flex items-center gap-2">
                             <input id="email_radio_{{ forloop.counter }}" type="radio" name="email"
-                                   {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{% endif %}
+                                   {% if emailaddress.primary or forloop.length == 1 %}checked="checked"{% endif %}
                                    class="input-radio"
                                    value="{{ emailaddress.email }}"/>
 
