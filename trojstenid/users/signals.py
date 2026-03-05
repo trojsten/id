@@ -61,7 +61,9 @@ def log_app_authorization(sender, request, token, **kwargs):
 
 
 @receiver(post_save, sender=User)
-def user_saved(sender, instance: User, **kwargs):
+def user_saved(sender, instance: User, *, update_fields, **kwargs):
+    if update_fields is not None and update_fields.issubset({"last_login"}):
+        return
     send_user_update.delay(instance.id)
 
 
