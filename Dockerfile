@@ -12,7 +12,7 @@ RUN pnpm run css-prod
 CMD ["pnpm", "run", "css-dev"]
 
 
-FROM ghcr.io/trojsten/django-docker:v6
+FROM ghcr.io/trojsten/django-docker:v7
 
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen
