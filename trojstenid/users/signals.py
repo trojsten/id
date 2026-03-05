@@ -28,6 +28,9 @@ def assign_groups_after_login(request, user: User, **kwargs):
         user=user, email__endswith="@trojsten.sk", verified=True
     ).exists()
     if has_trojsten_mail:
+        if user.groups.filter(name="trojsten:veduci").exists():
+            return
+
         logger.info(
             f"user {user.username} has @trojsten.sk address, adding "
             "trojsten:veduci group on login"
