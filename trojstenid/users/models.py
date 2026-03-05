@@ -62,7 +62,7 @@ class User(AbstractUser):
             return (
                 self.userschoolrecord_set.filter(start_date__lte=at)
                 .filter(Q(end_date__isnull=True) | Q(end_date__gte=at))
-                .select_related("school")
+                .select_related("school", "school_type")
                 .get()
             )
         except ObjectDoesNotExist:
