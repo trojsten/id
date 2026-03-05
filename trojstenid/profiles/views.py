@@ -45,8 +45,15 @@ class ProfileView(LoginRequiredMixin, DetailView):
         return get_object_or_404(User, username=self.kwargs["user"])
 
     def get_context_data(self, **kwargs):
+        assert isinstance(self.request.user, User)
+
         ctx = super().get_context_data(**kwargs)
         user = ctx["object"]
+        ctx["show_details"] = self.request.user.groups.filter(
+            name="trojsten:veduci"
+        ).exists()
         ctx["groups"] = user.groups.values_list("name", flat=True)
-        ctx["badges"] = Badge.objects.filter(badgeassignment__user=user)
+        ctx["badges"] = Badge.objects.filter(badgeassignment__user=user).select_related(
+            "group"
+        )
         return ctx

@@ -7,19 +7,62 @@
 <div class="max-w-4xl mx-auto p-4 sm:p-6">
     <div class="w-full bg-blue-500 h-32 rounded-lg"></div>
     <div class="-mt-20 text-center">
-        <img src="{{ object.avatar }}" alt="{{ object.get_full_name }}" class="w-32 h-32 mx-auto outline-white outline-4 outline rounded-full">
+        <img src="{{ object.avatar }}" alt="{{ object.get_full_name }}" class="size-32 mx-auto outline-white outline-4 outline rounded-full">
         <h1 class="font-bold text-2xl mt-3">
             {{ object.get_full_name }}
         </h1>
         <div>
             {% if "trojsten:veduci" in groups %}
             <span class="bg-red-600 text-white mt-1 font-bold gap-1 text-sm px-1 py-0.5 rounded-sm inline-flex items-center">
-                <span class="iconify inline h-4 w-4 text-white" data-icon="mdi:account-tie"></span>
+                <span class="iconify inline size-4 text-white" data-icon="mdi:account-tie"></span>
                 Vedúci
             </span>
             {% endif %}
         </div>
     </div>
+
+    {% if show_details %}
+        <details class="text-gray-800 my-5 p-2 text-center rounded-md bg-gray-50 ring-1 ring-inset ring-gray-500/10">
+            <summary class="font-semibold flex items-center justify-center gap-1 cursor-pointer">
+                <span class="iconify inline size-4" data-icon="mdi:shield-account"></span>
+                Informácie pre vedúcich
+            </summary>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
+                {% with school_record=object.get_current_school_record %}
+                    {% if school_record %}
+                        <div class="flex flex-col">
+                            <h4 class="text-sm font-semibold flex items-center justify-center gap-1">
+                                <span class="iconify inline size-4" data-icon="mdi:school"></span>
+                                Aktuálna škola
+                            </h4>
+                            <div class="flex flex-col">
+                                <span>{{ school_record.school.name }}</span>
+                                <span class="text-sm text-gray-500">{{ school_record.school.address }}</span>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <h4 class="text-sm font-semibold flex items-center justify-center gap-1">
+                                <span class="iconify inline size-4" data-icon="mdi:school"></span>
+                                Aktuálny ročník
+                            </h4>
+                            <div class="flex flex-col">
+                                <span>{{ school_record.get_current_year_display }}</span>
+                                <span class="text-sm text-gray-500">{{ school_record.school_type }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                <div class="flex flex-col">
+                    <h4 class="text-sm font-semibold flex items-center justify-center gap-1">
+                        <span class="iconify inline size-4" data-icon="mdi:email"></span>
+                        Emailová adresa
+                    </h4>
+                    <a href="mailto:{{ object.email }}">{{ object.email }}</a>
+                </div>
+            </div>
+        </details>
+    {% endif %}
 
     <hr class="my-5">
 
@@ -32,7 +75,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-2">
             {% for item in items %}
             <div class="flex gap-2 items-center">
-                <img src="{{ item.image.url }}" class="rounded-lg h-24 shrink-0" alt="{{ item.title }}">
+                <img src="{{ item.image.url }}" class="rounded-lg size-24 shrink-0" alt="{{ item.title }}">
                 <div>
                     <p class="text-lg font-bold leading-5">{{ item.title }}</p>
                     <p class="leading-5 text-gray-600">{{ item.description }}</p>
@@ -43,7 +86,7 @@
         {% endfor %}
     {% else %}
         <div class="text-center">
-            <span class="iconify w-12 h-12 text-gray-400 mx-auto" data-icon="mdi:trophy-broken"></span>
+            <span class="iconify size-12 text-gray-400 mx-auto" data-icon="mdi:trophy-broken"></span>
             <h3 class="mt-2 text-sm font-semibold text-gray-900">Žiadne odznaky</h3>
             <p class="mt-1 text-sm text-gray-500">Tento používateľ zatiaľ nezískal žiadne odznaky.</p>
         </div>
