@@ -18,7 +18,9 @@ class SchoolRecordListView(LoginRequiredMixin, ListView):
     template_name = "settings/school_list.html"
 
     def get_queryset(self) -> QuerySet[Any]:
-        return UserSchoolRecord.objects.filter(user=self.request.user)
+        return UserSchoolRecord.objects.filter(user=self.request.user).select_related(
+            "school", "school_type"
+        )
 
 
 class SchoolRecordCreateView(LoginRequiredMixin, FormView):
