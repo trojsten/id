@@ -11,6 +11,7 @@ class OurOAuth2Validator(OAuth2Validator):
             "groups": "groups",
             "school_info": "school_info",
             "emails": "email",
+            "previously_known_as": "profile",
         }
     )
 
@@ -25,6 +26,8 @@ class OurOAuth2Validator(OAuth2Validator):
         for e in user.emailaddress_set.filter(verified=True):
             emails.add(e.email)
 
+        merged_users = user.previously_known_as.values_list("id", flat=True)
+
         return {
             "name": user.get_full_name(),
             "family_name": user.last_name,
@@ -34,6 +37,7 @@ class OurOAuth2Validator(OAuth2Validator):
             "emails": list(emails),
             "groups": [g.name for g in user.groups.all()],
             "school_info": school_info,
+            "previously_known_as": merged_users,
         }
 
     def validate_silent_login(self, request):  # pyright:ignore
