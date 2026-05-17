@@ -32,6 +32,12 @@
       </div>
     </div>
 
+    {% if form.non_field_errors %}
+      <div class="text-red-600 text-sm">
+        {% for err in form.non_field_errors %}<p>{{ err }}</p>{% endfor %}
+      </div>
+    {% endif %}
+
     {% input form.remember %}
 
     {% if redirect_field_value %}
