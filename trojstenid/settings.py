@@ -233,7 +233,7 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "level": "INFO",
+            "level": "INFO" if not DEBUG else "DEBUG",
             "class": "logging.StreamHandler",
             "formatter": "log_format",
         },
@@ -245,7 +245,7 @@ LOGGING = {
         },
         "trojstenid": {
             "handlers": ["console"],
-            "level": "INFO",
+            "level": "DEBUG",
         },
     },
 }
