@@ -3,6 +3,7 @@ import logging
 import requests
 from django_rq import job
 
+from trojstenid.users.google_groups import sync_iam_groups
 from trojstenid.users.models import Application, User
 from trojstenid.users.serializers import UserSerializer
 
@@ -33,3 +34,8 @@ def send_user_update(user_id: int):
                 # No special error handling, as we treat this channel as "best-effort".
                 # Apps can always request fresh data through API or OIDC flow.
                 logger.error(f"error while pushing user update to {url}: {e}")
+
+
+@job
+def sync_google_groups():
+    sync_iam_groups()
