@@ -250,6 +250,9 @@ LOGGING = {
     },
 }
 
+GOOGLE_ADMIN_SERVICE_ACCOUNT = env("GOOGLE_ADMIN_SERVICE_ACCOUNT", default="")
+GOOGLE_ADMIN_SUBJECT = env("GOOGLE_ADMIN_SUBJECT", default="")
+
 RQ_QUEUES = {
     "default": {
         "HOST": env("REDIS_HOST", default="redis"),
