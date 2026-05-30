@@ -1,13 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.models import Group
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.generic import TemplateView, UpdateView
 from oauth2_provider.views import AuthorizationView
 
 from trojstenid.users.forms.settings import ProfileForm
-from trojstenid.users.models import Application
+from trojstenid.users.models import Application, User
 from trojstenid.users.tasks import sync_google_groups
 
 VEDUCI_GROUP = "veduci@iam.trojsten.sk"
@@ -71,8 +70,9 @@ class GroupListView(VeduciRequiredMixin, TemplateView):
     template_name = "groups/group_list.html"
 
     def get_context_data(self, **kwargs):
+        assert isinstance(self.request.user, User)
         context = super().get_context_data(**kwargs)
-        context["groups"] = Group.objects.order_by("name")
+        context["groups"] = self.request.user.groups.order_by("name")
         return context
 
 
