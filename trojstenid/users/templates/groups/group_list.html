@@ -1,0 +1,28 @@
+{% extends "settings_base.html" %}
+
+{% block title %}Skupiny - {{ block.super }}{% endblock %}
+
+{% block content %}
+  <div class="mx-auto max-w-2xl">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-bold text-gray-900">Moje skupiny</h2>
+      <form method="post" action="{% url "group_sync" %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-blue">
+          <span data-icon="mdi:sync" class="iconify h-4 w-4"></span>
+          Synchronizovať
+        </button>
+      </form>
+    </div>
+
+    <ul class="mt-6 divide-y divide-gray-100">
+      {% for group in groups %}
+        <li class="py-3 text-sm text-gray-900">
+          {{ group.name }}
+        </li>
+      {% empty %}
+        <li class="py-3 text-sm text-gray-500">Žiadne skupiny.</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock content %}
