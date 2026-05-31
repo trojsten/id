@@ -50,7 +50,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
         ctx = super().get_context_data(**kwargs)
         user = ctx["object"]
         ctx["show_details"] = self.request.user.groups.filter(
-            name="trojsten:veduci"
+            name="veduci@iam.trojsten.sk"
         ).exists()
         ctx["groups"] = user.groups.values_list("name", flat=True)
         ctx["badges"] = Badge.objects.filter(badgeassignment__user=user).select_related(

@@ -1,11 +1,7 @@
 import logging
 
 from allauth.account.models import EmailAddress
-from allauth.account.signals import email_confirmed, user_logged_in, user_logged_out
-from django.contrib.auth.models import Group
-from django.contrib.auth.signals import (
-    user_logged_in as dj_user_logged_in,
-)
+from allauth.account.signals import email_confirmed, user_logged_out
 from django.contrib.auth.signals import (
     user_logged_out as dj_user_logged_out,
 )
@@ -15,39 +11,18 @@ from oauth2_provider.signals import app_authorized
 
 from trojstenid import audit
 from trojstenid.users.models import User
-from trojstenid.users.tasks import send_user_update
+from trojstenid.users.tasks import send_user_update, sync_google_groups
 
 logger = logging.getLogger(__name__)
 
 
-@receiver([user_logged_in, dj_user_logged_in])
-def assign_groups_after_login(request, user: User, **kwargs):
-    audit.log(request, "logged in")
-
-    has_trojsten_mail = EmailAddress.objects.filter(
-        user=user, email__endswith="@trojsten.sk", verified=True
-    ).exists()
-    if has_trojsten_mail:
-        if user.groups.filter(name="trojsten:veduci").exists():
-            return
-
-        logger.info(
-            f"user {user.username} has @trojsten.sk address, adding "
-            "trojsten:veduci group on login"
-        )
-        veduci, _ = Group.objects.get_or_create(name="trojsten:veduci")
-        user.groups.add(veduci)
-
-
 @receiver(email_confirmed)
-def assign_groups_after_confirm(request, email_address: EmailAddress, **kwargs):
+def sync_groups_after_confirm(request, email_address: EmailAddress, **kwargs):
     if email_address.email.endswith("@trojsten.sk"):
         logger.info(
-            f"user {email_address.user.username} has @trojsten.sk address, adding "
-            "trojsten:veduci group on verification"
+            f"user {email_address.user.username} has verified @trojsten.sk address, syncing groups"
         )
-        veduci, _ = Group.objects.get_or_create(name="trojsten:veduci")
-        email_address.user.groups.add(veduci)
+        sync_google_groups.delay()
 
 
 @receiver([user_logged_out, dj_user_logged_out])
