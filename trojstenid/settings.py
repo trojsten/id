@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.github",
     "allauth.socialaccount.providers.openid_connect",
     "oauth2_provider",
     "django_cleanup",

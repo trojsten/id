@@ -9,8 +9,21 @@
 
         <button type="submit"
            class="btn btn-black">
-            <span data-icon="devicon-plain:google" class="iconify h-4 w-4"></span>
+            <span data-icon="devicon-plain:google" class="iconify size-4"></span>
             Google
+        </button>
+    </form>
+
+    <form method="POST" action="{% provider_login_url 'github' process=process %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+
+        <button type="submit"
+           class="btn btn-black">
+            <span data-icon="mdi:github" class="iconify size-5"></span>
+            GitHub
         </button>
     </form>
 
