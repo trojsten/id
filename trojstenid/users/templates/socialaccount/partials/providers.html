@@ -1,40 +1,21 @@
 {% load socialaccount %}
 
 <div class="mt-6 grid grid-cols-2 gap-4">
-    <form method="POST" action="{% provider_login_url 'google' process=process %}">
-        {% csrf_token %}
-        {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-        {% endif %}
+    {% get_providers as socialaccount_providers %}
+    {% for provider in socialaccount_providers %}
+        <form method="POST" action="{% provider_login_url provider process=process %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
 
-        <button type="submit"
-           class="btn btn-black">
-            <span data-icon="devicon-plain:google" class="iconify h-4 w-4"></span>
-            Google
-        </button>
-    </form>
-
-    <form method="POST" action="{% provider_login_url 'uniba' process=process %}">
-        {% csrf_token %}
-        {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-        {% endif %}
-
-        <button type="submit"
-           class="btn btn-black">
-            Univerzita Komenského
-        </button>
-    </form>
-
-    <form method="POST" action="{% provider_login_url 'trojsten-login' process=process %}">
-        {% csrf_token %}
-        {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-        {% endif %}
-
-        <button type="submit"
-           class="btn btn-black">
-            starý Trojsten Login
-        </button>
-    </form>
+            <button type="submit"
+               class="btn btn-black">
+                {% if provider.id != "openid_connect" %}
+                    <span data-icon="mdi:{{ provider.id }}" class="iconify size-5"></span>
+                {% endif %}
+                {{ provider.name }}
+            </button>
+        </form>
+    {% endfor %}
 </div>

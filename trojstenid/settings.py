@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.github",
     "allauth.socialaccount.providers.openid_connect",
     "oauth2_provider",
     "django_cleanup",
@@ -145,17 +146,6 @@ ACCOUNT_FORMS = {
 
 SOCIALACCOUNT_PROVIDERS = {
     "openid_connect": {
-        "APPS": [
-            {
-                "provider_id": "trojsten-login",
-                "name": "Trojsten Login",
-                "client_id": env("TROJSTEN_LOGIN_CLIENT"),
-                "secret": env("TROJSTEN_LOGIN_SECRET"),
-                "settings": {
-                    "server_url": "https://login.trojsten.sk",
-                },
-            },
-        ],
         "VERIFIED_EMAIL": True,
     }
 }

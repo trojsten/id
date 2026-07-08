@@ -34,8 +34,6 @@ jobs:
       env:
         DEBUG: True
         DATABASE_URL: "sqlite://:memory:"
-        TROJSTEN_LOGIN_CLIENT: ""
-        TROJSTEN_LOGIN_SECRET: ""
         RECAPTCHA_PUBLIC: ""
         RECAPTCHA_PRIVATE: ""
         OIDC_KEY: ""
