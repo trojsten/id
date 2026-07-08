@@ -28,6 +28,8 @@ jobs:
 
     - name: Install Dependencies
       run: uv sync --locked
+      env:
+        UV_EXCLUDE_NEWER: "7 days"
 
     - name: Test for missing migrations
       run: uv run python manage.py makemigrations --check
