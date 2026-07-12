@@ -29,6 +29,7 @@ dependencies = [
     "requests>=2.32.4",
     "google-api-python-client>=2.196.0",
     "google-auth>=2.53.0",
+    "pygithub>=2.9.1",
 ]
 
 [tool.ruff.lint]

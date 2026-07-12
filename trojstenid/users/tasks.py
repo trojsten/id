@@ -3,6 +3,7 @@ import logging
 import requests
 from django_rq import job
 
+from trojstenid.users.github import sync_github_teams
 from trojstenid.users.google_groups import sync_iam_groups
 from trojstenid.users.models import Application, User
 from trojstenid.users.serializers import UserSerializer
@@ -37,5 +38,18 @@ def send_user_update(user_id: int):
 
 
 @job
-def sync_google_groups():
+def sync_groups():
     sync_iam_groups()
+
+    sync_github_teams()
+
+
+@job
+def sync_github_teams_for_user(user_id: int | None = None):
+    logger.info(f"syncing github groups for user_id={user_id}")
+
+    qs = User.objects.all()
+    if user_id is not None:
+        qs = qs.filter(id=user_id)
+
+    sync_github_teams(qs)
