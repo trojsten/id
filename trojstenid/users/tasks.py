@@ -46,7 +46,7 @@ def sync_groups():
 
 @job
 def sync_github_teams_for_user(user_id: int | None = None):
-    logger.info(f"syncing github groups for user_id={user_id}")
+    logger.info(f"syncing GitHub teams for user_id={user_id}")
 
     qs = User.objects.all()
     if user_id is not None:

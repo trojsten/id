@@ -69,4 +69,4 @@ def socialaccount_saved(sender, instance: SocialAccount, **kwargs):
     )
 
     if instance.provider == "github":
-        sync_github_teams_for_user.delay(instance.user_id)  # type:ignore
+        sync_github_teams_for_user.delay(instance.user_id)  # type: ignore
