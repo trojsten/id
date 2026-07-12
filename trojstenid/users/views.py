@@ -79,7 +79,5 @@ class GroupListView(VeduciRequiredMixin, TemplateView):
 class GroupSyncView(VeduciRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         sync_groups.delay()
-        messages.success(
-            request, "Synchronizácia Google skupín bola spustená na pozadí."
-        )
+        messages.success(request, "Synchronizácia skupín bola spustená na pozadí.")
         return redirect("group_list")

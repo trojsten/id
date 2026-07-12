@@ -33,7 +33,11 @@ def get_teams_for_user(user: User, teams_mapping: dict[str, Team]) -> list[Team]
 def sync_github_teams(qs=None):
     if not settings.GITHUB_TEAMS:
         return
-    if settings.GITHUB_APP_ID <= 0 or not settings.GITHUB_APP_PRIVATE_KEY or not settings.GITHUB_ORG_NAME:
+    if (
+        settings.GITHUB_APP_ID <= 0
+        or not settings.GITHUB_APP_PRIVATE_KEY
+        or not settings.GITHUB_ORG_NAME
+    ):
         logger.warning("GitHub Teams sync not configured")
         return
     if qs is None:
