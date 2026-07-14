@@ -12,11 +12,7 @@ from oauth2_provider.signals import app_authorized
 
 from trojstenid import audit
 from trojstenid.users.models import User
-from trojstenid.users.tasks import (
-    send_user_update,
-    sync_github_teams_for_user,
-    sync_groups,
-)
+from trojstenid.users.tasks import queue_user_update, sync_github_teams_for_user, sync_groups
 
 logger = logging.getLogger(__name__)
 
@@ -47,19 +43,19 @@ def log_app_authorization(sender, request, token, **kwargs):
 def user_saved(sender, instance: User, *, update_fields, **kwargs):
     if update_fields is not None and update_fields.issubset({"last_login"}):
         return
-    send_user_update.delay(instance.id)
+    queue_user_update(instance.id)
 
 
 @receiver(post_save, sender=EmailAddress)
 def emailaddress_saved(sender, instance: EmailAddress, **kwargs):
-    send_user_update.delay(instance.user_id)  # type:ignore
+    queue_user_update(instance.user_id)  # type:ignore
 
 
 @receiver(m2m_changed, sender=User.groups.through)
 def groups_changed(sender, instance, **kwargs):
     if not isinstance(instance, User):
         return
-    send_user_update.delay(instance.id)
+    queue_user_update(instance.id)
 
 
 @receiver(post_save, sender=SocialAccount)

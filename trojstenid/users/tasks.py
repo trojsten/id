@@ -1,6 +1,7 @@
 import logging
 
 import requests
+from django.db import transaction
 from django_rq import job
 
 from trojstenid.users.github import sync_github_teams
@@ -9,6 +10,10 @@ from trojstenid.users.models import Application, User
 from trojstenid.users.serializers import UserSerializer
 
 logger = logging.getLogger(__name__)
+
+
+def queue_user_update(user_id: int):
+    transaction.on_commit(lambda: send_user_update.delay(user_id))
 
 
 @job
