@@ -12,7 +12,11 @@ from oauth2_provider.signals import app_authorized
 
 from trojstenid import audit
 from trojstenid.users.models import User
-from trojstenid.users.tasks import queue_user_update, sync_github_teams_for_user, sync_groups
+from trojstenid.users.tasks import (
+    queue_user_update,
+    sync_github_teams_for_user,
+    sync_groups,
+)
 
 logger = logging.getLogger(__name__)
 
