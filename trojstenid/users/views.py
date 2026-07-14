@@ -7,7 +7,7 @@ from oauth2_provider.views import AuthorizationView
 
 from trojstenid.users.forms.settings import ProfileForm
 from trojstenid.users.models import Application, User
-from trojstenid.users.tasks import sync_google_groups
+from trojstenid.users.tasks import sync_groups
 
 VEDUCI_GROUP = "veduci@iam.trojsten.sk"
 
@@ -78,8 +78,6 @@ class GroupListView(VeduciRequiredMixin, TemplateView):
 
 class GroupSyncView(VeduciRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        sync_google_groups.delay()
-        messages.success(
-            request, "Synchronizácia Google skupín bola spustená na pozadí."
-        )
+        sync_groups.delay()
+        messages.success(request, "Synchronizácia skupín bola spustená na pozadí.")
         return redirect("group_list")

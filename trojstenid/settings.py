@@ -147,7 +147,10 @@ ACCOUNT_FORMS = {
 SOCIALACCOUNT_PROVIDERS = {
     "openid_connect": {
         "VERIFIED_EMAIL": True,
-    }
+    },
+    "github": {
+        "VERIFIED_EMAIL": True,
+    },
 }
 SOCIALACCOUNT_AUTO_SIGNUP = False
 SOCIALACCOUNT_FORMS = {
@@ -242,6 +245,12 @@ LOGGING = {
 
 GOOGLE_ADMIN_SERVICE_ACCOUNT = env("GOOGLE_ADMIN_SERVICE_ACCOUNT", default="")
 GOOGLE_ADMIN_SUBJECT = env("GOOGLE_ADMIN_SUBJECT", default="")
+
+GITHUB_APP_ID = env.int("GITHUB_APP_ID", default=-1)
+GITHUB_APP_PRIVATE_KEY = env("GITHUB_APP_PRIVATE_KEY", default="")
+GITHUB_ORG_NAME = env("GITHUB_ORG_NAME", default="trojsten")
+GITHUB_TEAMS = env.dict("GITHUB_TEAMS", default={})
+
 
 RQ_QUEUES = {
     "default": {

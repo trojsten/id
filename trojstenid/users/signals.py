@@ -2,6 +2,7 @@ import logging
 
 from allauth.account.models import EmailAddress
 from allauth.account.signals import email_confirmed, user_logged_out
+from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth.signals import (
     user_logged_out as dj_user_logged_out,
 )
@@ -11,7 +12,11 @@ from oauth2_provider.signals import app_authorized
 
 from trojstenid import audit
 from trojstenid.users.models import User
-from trojstenid.users.tasks import send_user_update, sync_google_groups
+from trojstenid.users.tasks import (
+    send_user_update,
+    sync_github_teams_for_user,
+    sync_groups,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +27,7 @@ def sync_groups_after_confirm(request, email_address: EmailAddress, **kwargs):
         logger.info(
             f"user {email_address.user.username} has verified @trojsten.sk address, syncing groups"
         )
-        sync_google_groups.delay()
+        sync_groups.delay()
 
 
 @receiver([user_logged_out, dj_user_logged_out])
@@ -55,3 +60,13 @@ def groups_changed(sender, instance, **kwargs):
     if not isinstance(instance, User):
         return
     send_user_update.delay(instance.id)
+
+
+@receiver(post_save, sender=SocialAccount)
+def socialaccount_saved(sender, instance: SocialAccount, **kwargs):
+    logger.info(
+        f"socialaccount saved for user {instance.user.username} (provider {instance.provider})"
+    )
+
+    if instance.provider == "github":
+        sync_github_teams_for_user.delay(instance.user_id)  # type: ignore
