@@ -26,7 +26,7 @@ class OurOAuth2Validator(OAuth2Validator):
         for e in user.emailaddress_set.filter(verified=True):
             emails.add(e.email)
 
-        merged_users = user.previously_known_as.values_list("id", flat=True)
+        merged_users = list(user.previously_known_as.values_list("id", flat=True))
 
         return {
             "name": user.get_full_name(),
