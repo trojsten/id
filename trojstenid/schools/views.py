@@ -66,7 +66,8 @@ class SchoolRecordCreateView(LoginRequiredMixin, FormView):
         if not self.request.POST.get("confirmed"):
             ctx = self.get_context_data(form=form)
             ctx["confirmation"] = True
-            ctx["current_year"] = record.get_current_year_display(timezone.now().date())
+            current_year = record.get_current_year_display(timezone.now().date())
+            ctx["current_year"] = f"{current_year} ({record.school_type.short})"
             return self.render_to_response(ctx)
 
         return self.save_record(form, record)
