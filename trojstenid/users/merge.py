@@ -1,4 +1,6 @@
 import logging
+from datetime import timedelta
+from itertools import groupby
 from operator import attrgetter
 
 from allauth.account.models import EmailAddress
@@ -6,6 +8,7 @@ from django.db import transaction
 from django.db.models import ForeignObjectRel, Model
 
 from trojstenid.badges.models import BadgeAssignment
+from trojstenid.schools.models import UserSchoolRecord
 from trojstenid.users.models import User
 
 logger = logging.getLogger(__name__)
@@ -20,6 +23,7 @@ FIELDS_TO_MERGE_MANUALLY = [
     "user_permissions",
     #
     "badgeassignment",  # unique on (user, badge)
+    "userschoolrecord",  # dates must be capped before the next school starts
     # we don't want to mess with oauth tokens, they'll expire
     "oauth2_provider_grant",
     "oauth2_provider_accesstoken",
@@ -92,6 +96,7 @@ def merge_user_into(user: User, into: User):
 
 def merge_others(user: User, into: User):
     EmailAddress.objects.filter(user=user).update(user=into, primary=False)
+    merge_school_records(user, into)
     into.groups.add(*user.groups.all())
     into.user_permissions.add(*user.user_permissions.all())
 
@@ -106,3 +111,30 @@ def merge_others(user: User, into: User):
     BadgeAssignment.objects.filter(user=user, badge_id__in=missing_badges).update(
         user=into
     )
+
+
+def merge_school_records(user: User, into: User):
+    UserSchoolRecord.objects.filter(user=user).update(user=into)
+
+    records = list(
+        UserSchoolRecord.objects.filter(user=into).order_by("start_date", "id")
+    )
+    for _, same_start in groupby(records, attrgetter("start_date")):
+        duplicates = list(same_start)
+        keep = max(
+            duplicates,
+            key=lambda r: (r.end_date is None, r.end_date or r.start_date, r.id),
+        )
+
+        UserSchoolRecord.objects.filter(
+            id__in=[r.id for r in duplicates if r.id != keep.id]
+        ).delete()
+
+    records = list(
+        UserSchoolRecord.objects.filter(user=into).order_by("start_date", "id")
+    )
+    for record, next_record in zip(records, records[1:]):
+        end_date = next_record.start_date - timedelta(days=1)
+        if record.end_date is None or record.end_date > end_date:
+            record.end_date = end_date
+            record.save(update_fields=["end_date"])
