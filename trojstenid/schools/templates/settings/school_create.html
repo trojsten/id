@@ -41,10 +41,28 @@
           </div>
           {% endif %}
         </div>
-        {% form form %}
-        <div>
-          <button class="btn btn-blue" type="submit">Uložiť</button>
-        </div>
+        {% if confirmation %}
+          <div class="rounded-md bg-blue-50 p-4 text-blue-900">
+            Podľa zadaných údajov navštevuješ tento školský rok
+            <strong>{{ current_year }}</strong> na škole <strong>{{ school }}</strong>.
+            Je to správne?
+          </div>
+
+          <input type="hidden" name="confirmed" value="1">
+          {% for field in form %}
+            {{ field.as_hidden }}
+          {% endfor %}
+
+          <div class="flex gap-2">
+            <button class="btn btn-blue" type="submit">Áno, uložiť</button>
+            <button class="btn btn-black" type="button" onclick="history.back()">Nie, upraviť</button>
+          </div>
+        {% else %}
+          {% form form %}
+          <div>
+            <button class="btn btn-blue" type="submit">Pokračovať</button>
+          </div>
+        {% endif %}
       </form>
     {% endif %}
   </div>
