@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from base64 import b64decode
 from pathlib import Path
 
 from environs import Env
@@ -247,7 +248,7 @@ GOOGLE_ADMIN_SERVICE_ACCOUNT = env("GOOGLE_ADMIN_SERVICE_ACCOUNT", default="")
 GOOGLE_ADMIN_SUBJECT = env("GOOGLE_ADMIN_SUBJECT", default="")
 
 GITHUB_APP_ID = env.int("GITHUB_APP_ID", default=-1)
-GITHUB_APP_PRIVATE_KEY = env("GITHUB_APP_PRIVATE_KEY", default="")
+GITHUB_APP_PRIVATE_KEY = b64decode(env("GITHUB_APP_PRIVATE_KEY", default="")).decode()
 GITHUB_ORG_NAME = env("GITHUB_ORG_NAME", default="trojsten")
 GITHUB_TEAMS = env.dict("GITHUB_TEAMS", default={})
 
