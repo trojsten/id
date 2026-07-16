@@ -1,0 +1,58 @@
+{% extends "settings_base.html" %}
+
+{% block title %}Wi-Fi - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="mx-auto max-w-2xl space-y-8">
+        <div>
+            <h2 class="text-xl font-bold text-gray-900">Wi-Fi</h2>
+            <p class="mt-2 text-sm text-gray-600">
+                Tu si vieš vytvoriť vlastné heslo na pripojenie do Trojsten Wi-Fi.
+            </p>
+        </div>
+
+        {% if generated_password %}
+            <div class="rounded-md bg-yellow-50 p-4 text-sm text-yellow-800">
+                Heslo si ulož teraz. Z bezpečnostných dôvodov ho už viac nezobrazíme.
+            </div>
+        {% endif %}
+
+        <dl class="divide-y divide-gray-100 rounded-lg border border-gray-200 bg-white text-sm">
+            <div class="grid grid-cols-3 gap-4 px-4 py-3">
+                <dt class="font-medium text-gray-900">EAP metóda</dt>
+                <dd class="col-span-2 text-gray-700">EAP-TTLS/PAP</dd>
+            </div>
+            <div class="grid grid-cols-3 gap-4 px-4 py-3">
+                <dt class="font-medium text-gray-900">Doména certifikátu</dt>
+                <dd class="col-span-2 text-gray-700">radius.trojsten.sk</dd>
+            </div>
+            <div class="grid grid-cols-3 gap-4 px-4 py-3">
+                <dt class="font-medium text-gray-900">Používateľské meno</dt>
+                <dd class="col-span-2 font-mono text-gray-700">{{ wifi_password.username|default:user.username }}</dd>
+            </div>
+            <div class="grid grid-cols-3 gap-4 px-4 py-3">
+                <dt class="font-medium text-gray-900">Heslo</dt>
+                <dd class="col-span-2 font-mono text-gray-700">
+                    {% if generated_password %}
+                        {{ generated_password }}
+                    {% elif wifi_password %}
+                        Heslo už bolo vygenerované a nedá sa zobraziť.
+                    {% else %}
+                        Zatiaľ nemáš vygenerované heslo.
+                    {% endif %}
+                </dd>
+            </div>
+        </dl>
+
+        <form method="post">
+            {% csrf_token %}
+            <button class="btn btn-blue" type="submit">
+                {% if wifi_password %}Vygenerovať nové heslo{% else %}Vygenerovať heslo{% endif %}
+            </button>
+            {% if wifi_password %}
+                <p class="mt-2 text-sm text-gray-600">Nové heslo nahradí staré.</p>
+            {% endif %}
+        </form>
+
+    </div>
+{% endblock content %}

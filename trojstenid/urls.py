@@ -32,6 +32,7 @@ urlpatterns = [
     path("oauth/", include("trojstenid.users.urls_oauth", namespace="oauth2_provider")),
     path("api/", include("trojstenid.users.urls_api", namespace="api")),
     path("groups/", include("trojstenid.users.urls_groups")),
+    path("wifi/", views.WifiPasswordView.as_view(), name="wifi_password"),
     path("django-rq/", include("django_rq.urls")),
 ]
 

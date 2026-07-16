@@ -1,8 +1,10 @@
 import re
+import secrets
 from datetime import date
 from pathlib import PurePath
 from typing import TYPE_CHECKING
 
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import AbstractUser, Group
 from django.core import validators
 from django.core.exceptions import ObjectDoesNotExist
@@ -51,6 +53,34 @@ class UsernameValidator(validators.RegexValidator):
 
 
 username_validators = [UsernameValidator()]
+WIFI_PASSWORD_ALPHABET = "346789ABCDEFGHJKLMNPQRTUVWXY"  # noqa: S105
+WIFI_PASSWORD_LENGTH = 12
+
+
+class WifiPassword(models.Model):
+    user = models.OneToOneField(
+        "users.User", on_delete=models.CASCADE, blank=True, null=True
+    )
+    username = models.CharField(
+        max_length=150, unique=True, validators=username_validators
+    )
+    password = models.CharField(max_length=128)
+    allowed_callers = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.username
+
+    def set_password(self, raw_password=None):
+        if raw_password is None:
+            raw_password = "".join(
+                secrets.choice(WIFI_PASSWORD_ALPHABET)
+                for _ in range(WIFI_PASSWORD_LENGTH)
+            )
+        self.password = make_password(raw_password)
+        return raw_password
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
 
 
 class User(AbstractUser):
