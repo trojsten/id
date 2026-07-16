@@ -5,12 +5,18 @@ from django.contrib.auth.decorators import login_required
 
 from trojstenid.schools.admin import UserSchoolRecordInline
 
-from .models import User
+from .models import User, WifiPassword
 
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + ((None, {"fields": ["avatar_file"]}),)  # pyright:ignore
     inlines = tuple(UserAdmin.inlines) + (UserSchoolRecordInline,)
+
+
+@admin.register(WifiPassword)
+class WifiPasswordAdmin(admin.ModelAdmin):
+    list_display = ("username", "user")
+    search_fields = ("username", "user__username", "allowed_callers")
 
 
 admin.site.register(User, CustomUserAdmin)

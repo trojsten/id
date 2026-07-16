@@ -12,7 +12,7 @@
             {{ object.get_full_name }}
         </h1>
         <div>
-            {% if "veduci@iam.trojsten.sk" in groups %}
+            {% if VEDUCI_GROUP in groups %}
             <span class="bg-red-600 text-white mt-1 font-bold gap-1 text-sm px-1 py-0.5 rounded-sm inline-flex items-center">
                 <span class="iconify inline size-4 text-white" data-icon="mdi:account-tie"></span>
                 Vedúci

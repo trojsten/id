@@ -7,6 +7,7 @@ from django.views.generic import DetailView, TemplateView
 from PIL import ImageColor
 
 from trojstenid.badges.models import Badge
+from trojstenid.users.groups import VEDUCI_GROUP
 from trojstenid.users.models import User
 
 
@@ -52,9 +53,10 @@ class ProfileView(LoginRequiredMixin, DetailView):
         ctx = super().get_context_data(**kwargs)
         user = ctx["object"]
         ctx["show_details"] = self.request.user.groups.filter(
-            name="veduci@iam.trojsten.sk"
+            name=VEDUCI_GROUP
         ).exists()
         ctx["groups"] = user.groups.values_list("name", flat=True)
+        ctx["VEDUCI_GROUP"] = VEDUCI_GROUP
         ctx["badges"] = Badge.objects.filter(badgeassignment__user=user).select_related(
             "group"
         )

@@ -253,6 +253,7 @@ GITHUB_APP_PRIVATE_KEY = b64decode(env("GITHUB_APP_PRIVATE_KEY", default="")).de
 GITHUB_ORG_NAME = env("GITHUB_ORG_NAME", default="trojsten")
 GITHUB_TEAMS = env.dict("GITHUB_TEAMS", default={})
 
+RADIUS_AUTH_TOKEN = env("RADIUS_AUTH_TOKEN", default="")
 
 RQ_QUEUES = {
     "default": {

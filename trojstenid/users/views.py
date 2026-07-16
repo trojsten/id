@@ -6,17 +6,23 @@ from django.views.generic import TemplateView, UpdateView
 from oauth2_provider.views import AuthorizationView
 
 from trojstenid.users.forms.settings import ProfileForm
-from trojstenid.users.models import Application, User
+from trojstenid.users.groups import VEDUCI_GROUP, WIFI_GROUP
+from trojstenid.users.models import Application, User, WifiPassword
 from trojstenid.users.tasks import sync_groups
-
-VEDUCI_GROUP = "veduci@iam.trojsten.sk"
 
 
 class VeduciRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
-    """Allows access only to members of veduci@iam.trojsten.sk."""
+    """Allows access only to veduci."""
 
     def test_func(self):
         return self.request.user.groups.filter(name=VEDUCI_GROUP).exists()
+
+
+class WifiRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+    """Allows access only to wifi users."""
+
+    def test_func(self):
+        return self.request.user.groups.filter(name=WIFI_GROUP).exists()
 
 
 class TrojstenAuthorizationView(AuthorizationView):
@@ -64,6 +70,31 @@ class LandingPageView(TemplateView):
         if request.user.is_authenticated:
             return redirect("account_profile")
         return super().dispatch(request, *args, **kwargs)
+
+
+class WifiPasswordView(WifiRequiredMixin, TemplateView):
+    template_name = "settings/wifi.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["wifi_password"] = WifiPassword.objects.filter(
+            user=self.request.user
+        ).first()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        wifi_password, _ = WifiPassword.objects.get_or_create(
+            user=request.user,
+            defaults={"username": request.user.username, "password": ""},
+        )
+        raw_password = wifi_password.set_password()
+        wifi_password.save()
+        messages.success(request, "Wi-Fi heslo bolo vygenerované.")
+
+        context = self.get_context_data(**kwargs)
+        context["wifi_password"] = wifi_password
+        context["generated_password"] = raw_password
+        return self.render_to_response(context)
 
 
 class GroupListView(VeduciRequiredMixin, TemplateView):
