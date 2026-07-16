@@ -82,6 +82,20 @@ class WifiPassword(models.Model):
     def check_password(self, raw_password):
         return check_password(raw_password, self.password)
 
+    def allows_caller(self, calling_station_id):
+        callers = [
+            c.strip().upper() for c in self.allowed_callers.split(",") if c.strip()
+        ]
+        if not callers:
+            return True
+        caller = calling_station_id.strip().upper()
+        normalized_caller = caller.replace(":", "").replace("-", "")
+        return any(
+            caller == allowed
+            or normalized_caller == allowed.replace(":", "").replace("-", "")
+            for allowed in callers
+        )
+
 
 class User(AbstractUser):
     id: int

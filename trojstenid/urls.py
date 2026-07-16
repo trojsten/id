@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from trojstenid.users import views
+from trojstenid.users import views, views_api
 
 urlpatterns = [
     path("", views.LandingPageView.as_view()),
@@ -31,6 +31,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("oauth/", include("trojstenid.users.urls_oauth", namespace="oauth2_provider")),
     path("api/", include("trojstenid.users.urls_api", namespace="api")),
+    path("wifi/check/", views_api.RadiusCheckView.as_view(), name="radius_check"),
     path("groups/", include("trojstenid.users.urls_groups")),
     path("wifi/", views.WifiPasswordView.as_view(), name="wifi_password"),
     path("django-rq/", include("django_rq.urls")),

@@ -1,8 +1,40 @@
+from hmac import compare_digest
+
+from django.conf import settings
 from django.db.models import Q
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics, permissions
 
-from trojstenid.users.models import User
+from trojstenid.users.models import User, WifiPassword
 from trojstenid.users.serializers import UserListSerializer, UserSerializer
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class RadiusCheckView(View):
+    def post(self, request, *args, **kwargs):
+        token = settings.RADIUS_AUTH_TOKEN
+        if not token:
+            return HttpResponseNotFound()
+
+        auth = request.headers.get("Authorization", "")
+        if not auth.startswith("Bearer ") or not compare_digest(auth[7:], token):
+            return HttpResponseForbidden()
+
+        username = request.POST.get("User-Name", "")
+        password = request.POST.get("User-Password", "")
+        calling_station_id = request.POST.get("Calling-Station-Id", "")
+
+        wifi_password = WifiPassword.objects.filter(username=username).first()
+        if (
+            wifi_password
+            and wifi_password.check_password(password)
+            and wifi_password.allows_caller(calling_station_id)
+        ):
+            return HttpResponse("OK")
+        return HttpResponseForbidden()
 
 
 class UserListView(generics.ListAPIView):
