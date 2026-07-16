@@ -1,3 +1,4 @@
+import logging
 from hmac import compare_digest
 
 from django.conf import settings
@@ -10,6 +11,8 @@ from rest_framework import generics, permissions
 
 from trojstenid.users.models import User, WifiPassword
 from trojstenid.users.serializers import UserListSerializer, UserSerializer
+
+logger = logging.getLogger(__name__)
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -33,6 +36,12 @@ class RadiusCheckView(View):
             and wifi_password.check_password(password)
             and wifi_password.allows_caller(calling_station_id)
         ):
+            logger.info(
+                "successful wifi login username=%s calling_station_id=%s nas=%s",
+                username,
+                calling_station_id,
+                request.POST.get("NAS-Identifier", ""),
+            )
             return HttpResponse("OK")
         return HttpResponseForbidden()
 
