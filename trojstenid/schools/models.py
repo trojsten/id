@@ -129,9 +129,9 @@ class UserSchoolRecord(models.Model):
     def get_current_year_display(self, at: date | None = None) -> str:
         years = self.school_type.years
         current_year = self.get_current_year(at)
-        if current_year >= len(years):
-            return "?"
-        return years[current_year]
+        if 0 <= current_year < len(years):
+            return years[current_year]
+        return "?"
 
     def is_active(self):
         now = timezone.now().date()
