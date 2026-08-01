@@ -159,6 +159,8 @@ SOCIALACCOUNT_FORMS = {
     "signup": "trojstenid.users.forms.allauth.OurSocialSignupForm",
 }
 
+ALLAUTH_TRUSTED_CLIENT_IP_HEADER = env("TRUSTED_CLIENT_IP_HEADER", default=None)
+
 RECAPTCHA_PUBLIC_KEY = env("RECAPTCHA_PUBLIC")
 RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_PRIVATE")
 if DEBUG:
