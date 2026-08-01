@@ -117,7 +117,7 @@ class UserSchoolRecord(models.Model):
 
     def get_start_display(self):
         ayear = date_to_academic_year(self.start_date)
-        return f"{ayear}/{ayear + 1 % 100}"
+        return f"{ayear}/{(ayear + 1) % 100}"
 
     def get_current_year(self, at: date | None = None) -> int:
         if at is None:
