@@ -159,6 +159,8 @@ SOCIALACCOUNT_FORMS = {
     "signup": "trojstenid.users.forms.allauth.OurSocialSignupForm",
 }
 
+ALLAUTH_TRUSTED_CLIENT_IP_HEADER = env("TRUSTED_CLIENT_IP_HEADER", default=None)
+
 RECAPTCHA_PUBLIC_KEY = env("RECAPTCHA_PUBLIC")
 RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_PRIVATE")
 if DEBUG:
@@ -255,10 +257,22 @@ GITHUB_TEAMS = env.dict("GITHUB_TEAMS", default={})
 
 RADIUS_AUTH_TOKEN = env("RADIUS_AUTH_TOKEN", default="")
 
+REDIS_HOST = env("REDIS_HOST", default="redis")
+REDIS_PORT = 6379
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/1",
+    }
+}
+
+
 RQ_QUEUES = {
     "default": {
-        "HOST": env("REDIS_HOST", default="redis"),
-        "PORT": 6379,
+        "HOST": REDIS_HOST,
+        "PORT": REDIS_PORT,
+        "DB": 0,
         "ASYNC": not DEBUG,
     },
 }
