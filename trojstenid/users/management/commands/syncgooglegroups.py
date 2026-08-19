@@ -2,7 +2,7 @@ from typing import Any
 
 from django.core.management.base import BaseCommand
 
-from trojstenid.users.google_groups import sync_iam_groups
+from trojstenid.users.google_api import sync_iam_groups
 
 
 class Command(BaseCommand):

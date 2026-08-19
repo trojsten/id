@@ -1,0 +1,7 @@
+{% extends "account/email/base_message.txt" %}
+
+{% block content %}V tvojom Trojstenovom Google účte si si ešte nenastavil dvojstupňové overovanie (2FA).
+Do dvoch týždňov od vytvorenie účtu si musíš nastaviť dvojstupňové overovanie (v tvojom prípade do {{ required_after|date:"d.m.Y" }}), inak stratíš prístup k účtu.
+
+Návod na to, ako to urobiť vieš nájsť napr. tu: https://support.google.com/accounts/answer/185839?hl=sk
+{% endblock content %}

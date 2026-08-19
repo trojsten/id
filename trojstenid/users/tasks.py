@@ -5,7 +5,7 @@ from django.db import transaction
 from django_rq import job
 
 from trojstenid.users.github import sync_github_teams
-from trojstenid.users.google_groups import sync_iam_groups
+from trojstenid.users.google_api import sync_iam_groups
 from trojstenid.users.models import Application, User
 from trojstenid.users.serializers import UserSerializer
 

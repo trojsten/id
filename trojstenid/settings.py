@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from base64 import b64decode
+from datetime import timedelta
 from pathlib import Path
 
 from environs import Env
@@ -249,6 +250,8 @@ LOGGING = {
 
 GOOGLE_ADMIN_SERVICE_ACCOUNT = env("GOOGLE_ADMIN_SERVICE_ACCOUNT", default="")
 GOOGLE_ADMIN_SUBJECT = env("GOOGLE_ADMIN_SUBJECT", default="")
+GOOGLE_TFA_MIN_ACCOUNT_AGE = env.timedelta("GOOGLE_TFA_MIN_ACCOUNT_AGE", default=timedelta(days=5))
+GOOGLE_TFA_MAX_ACCOUNT_AGE = env.timedelta("GOOGLE_TFA_MAX_ACCOUNT_AGE", default=timedelta(days=14))
 
 GITHUB_APP_ID = env.int("GITHUB_APP_ID", default=-1)
 GITHUB_APP_PRIVATE_KEY = b64decode(env("GITHUB_APP_PRIVATE_KEY", default="")).decode()
