@@ -12,8 +12,10 @@ from googleapiclient.discovery import build
 
 logger = logging.getLogger(__name__)
 
-SCOPES = ["https://www.googleapis.com/auth/admin.directory.group.readonly",
-          "https://www.googleapis.com/auth/admin.directory.user.readonly"]
+SCOPES = [
+    "https://www.googleapis.com/auth/admin.directory.group.readonly",
+    "https://www.googleapis.com/auth/admin.directory.user.readonly",
+]
 IAM_DOMAIN = "iam.trojsten.sk"
 TFA_ENFORCED_AFTER = timedelta(days=14)
 
@@ -110,7 +112,7 @@ def sync_iam_groups() -> None:
         sync_group(group)
 
 
-def query_nontfa_users() -> list[tuple[str, datetime]]:
+def query_nontfa_users() -> list[tuple[str, datetime, str | None]]:
     """
     Returns all email addresses of users whose account is at least one-week-old and has not enabled 2FA.
     """
@@ -136,15 +138,19 @@ def query_nontfa_users() -> list[tuple[str, datetime]]:
             email = user.get("primaryEmail", "")
             has_2sv_enabled = user.get("isEnrolledIn2Sv", False)
             has_2sv_enforced = user.get("isEnforcedIn2Sv", False)
-            creation_time = isoparse(user["creationTime"]) if "creationTime" in user else None
-            if (
-                not has_2sv_enabled
-                and has_2sv_enforced
-                and creation_time
-            ):
+            creation_time = (
+                isoparse(user["creationTime"]) if "creationTime" in user else None
+            )
+            if not has_2sv_enabled and has_2sv_enforced and creation_time:
                 account_age = now() - creation_time
                 if min_account_age <= account_age <= max_account_age:
-                    users.append((email, creation_time + TFA_ENFORCED_AFTER))
+                    users.append(
+                        (
+                            email,
+                            creation_time + TFA_ENFORCED_AFTER,
+                            user.get("secondaryEmail", None),
+                        )
+                    )
 
         request = directory.users().list_next(request, response)
     return users

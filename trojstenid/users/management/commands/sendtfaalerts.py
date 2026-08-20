@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives, get_connection
 from django.core.management import BaseCommand
 from django.template.loader import render_to_string
 
@@ -24,47 +24,65 @@ class Command(BaseCommand):
             self.stdout.write(self.style.NOTICE("No users found without 2FA enabled."))
             return
 
-        self.stdout.write(self.style.MIGRATE_HEADING(f"Found {len(nontfa_users)} user(s) requiring 2FA alert.\n"))
+        self.stdout.write(
+            self.style.MIGRATE_HEADING(
+                f"Found {len(nontfa_users)} user(s) requiring 2FA alert.\n"
+            )
+        )
+
+        if dry_run:
+            for email, required_after, _ in nontfa_users:
+                self.stdout.write(
+                    self.style.NOTICE(
+                        f"[DRY-RUN] Would alert {email}, 2FA required after: {required_after}"
+                    )
+                )
+            self.stdout.write(self.style.SUCCESS("\nDry run complete."))
+            return
 
         sent_count = 0
         failed_count = 0
 
-        for email, required_after in nontfa_users:
-            if dry_run:
-                self.stdout.write(
-                    self.style.NOTICE(f"[DRY-RUN] Would alert {email:<32} | 2FA required after: {required_after}")
-                )
-                continue
+        connection = get_connection()
+        try:
+            connection.open()
 
-            try:
-                content = render_to_string(
-                    "account/email/tfa_alert.html",
-                    {"email": email, "required_after": required_after},
-                )
+            for email, required_after, secondary_email in nontfa_users:
+                try:
+                    content = render_to_string(
+                        "account/email/tfa_alert.txt",
+                        {"email": email, "required_after": required_after},
+                    )
 
-                send_mail(
-                    subject="Dvojstupňové overenie tvojho Trojsten Google účtu",
-                    message=content,
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[email],
-                )
-                sent_count += 1
-                self.stdout.write(
-                    self.style.SUCCESS(f"Sent to '{email}', 2FA required after: {required_after}")
-                )
-            except Exception as e:
-                failed_count += 1
-                self.stderr.write(
-                    self.style.ERROR(f"Failed to send to '{email}', Error: {e}")
-                )
+                    msg = EmailMultiAlternatives(
+                        subject="Dvojstupňové overenie tvojho Trojsten Google účtu",
+                        body=content,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        to=[email],
+                        cc=[secondary_email] if secondary_email else None,
+                        connection=connection,
+                    )
+                    msg.send()
 
+                    sent_count += 1
+                    self.stdout.write(
+                        self.style.SUCCESS(
+                            f"Sent to '{email}', 2FA required after: {required_after}"
+                        )
+                    )
+                except Exception as e:
+                    failed_count += 1
+                    self.stderr.write(
+                        self.style.ERROR(f"Failed to send to '{email}', Error: {e}")
+                    )
 
-        self.stdout.write("")
-        if dry_run:
-            self.stdout.write(self.style.SUCCESS(f"Dry run complete."))
-        else:
-            self.stdout.write(
-                self.style.SUCCESS(
-                    f"Completed. Sent: {sent_count}, failed: {failed_count}"
-                )
+        except Exception as e:
+            self.stderr.write(self.style.ERROR(f"Error during email delivery: {e}"))
+        finally:
+            connection.close()
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"\nCompleted. Sent: {sent_count}, failed: {failed_count}"
             )
+        )
