@@ -59,7 +59,7 @@ class Command(BaseCommand):
                         body=content,
                         from_email=settings.DEFAULT_FROM_EMAIL,
                         to=[email],
-                        cc=[secondary_email] if secondary_email else None,
+                        cc=secondary_email if secondary_email else None,
                         connection=connection,
                     )
                     msg.send()
