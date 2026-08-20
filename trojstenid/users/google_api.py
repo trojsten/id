@@ -1,6 +1,6 @@
 import json
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from allauth.account.models import EmailAddress
 from dateutil.parser import isoparse
@@ -17,7 +17,6 @@ SCOPES = [
     "https://www.googleapis.com/auth/admin.directory.user.readonly",
 ]
 IAM_DOMAIN = "iam.trojsten.sk"
-TFA_ENFORCED_AFTER = timedelta(days=14)
 
 
 def _get_credentials():
@@ -118,8 +117,9 @@ def query_nontfa_users() -> list[tuple[str, datetime, str | None]]:
     """
     min_account_age = getattr(settings, "GOOGLE_TFA_MIN_ACCOUNT_AGE")
     max_account_age = getattr(settings, "GOOGLE_TFA_MAX_ACCOUNT_AGE")
-    if min_account_age is None or max_account_age is None:
-        logger.warning("Google TFA account age range not configured")
+    enrollment_period = getattr(settings, "GOOGLE_TFA_ENROLLMENT_PERIOD")
+    if min_account_age is None or max_account_age is None or enrollment_period is None:
+        logger.warning("Google TFA account age or enrollment period not configured")
         return []
 
     credentials = _get_credentials()
@@ -147,7 +147,7 @@ def query_nontfa_users() -> list[tuple[str, datetime, str | None]]:
                     users.append(
                         (
                             email,
-                            creation_time + TFA_ENFORCED_AFTER,
+                            creation_time + enrollment_period,
                             user.get("secondaryEmail", None),
                         )
                     )
