@@ -109,6 +109,9 @@ class UserSchoolRecord(models.Model):
     start_year = models.PositiveIntegerField(default=0)
     end_date = models.DateField(blank=True, null=True)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     objects: ClassVar["UserSchoolRecordManager"] = UserSchoolRecordManager()
 
     class Meta:
