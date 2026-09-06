@@ -12,7 +12,7 @@ class UserSchoolRecordSerializer(serializers.BaseSerializer):
 
 
 class EmailAddressSerializer(serializers.ModelSerializer):
-    class Meta:  # type:ignore
+    class Meta:
         model = EmailAddress
         fields = ["email", "verified", "primary"]
 
@@ -25,7 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
     emails = EmailAddressSerializer(many=True, source="emailaddress_set")
     avatar = serializers.SerializerMethodField()
 
-    class Meta:  # type:ignore
+    class Meta:
         model = User
         fields = [
             "id",

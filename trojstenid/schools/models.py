@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
@@ -28,7 +28,7 @@ class SchoolType(models.Model):
         return self.name
 
 
-class SchoolQuerySet(models.QuerySet):
+class SchoolQuerySet(models.QuerySet["School"]):
     def search(self, query: str):
         return self.filter(
             Q(name__unaccent__icontains=query) | Q(address__unaccent__icontains=query)
@@ -43,7 +43,9 @@ class School(models.Model):
     types = models.ManyToManyField(SchoolType)
     is_selectable = models.BooleanField(default=True)
 
-    objects: SchoolQuerySet = SchoolQuerySet.as_manager()  # pyright:ignore
+    objects: ClassVar[SchoolQuerySet] = (
+        SchoolQuerySet.as_manager()
+    )  # ty: ignore[invalid-assignment]
 
     class Meta:
         ordering = ["eduid", "name"]
@@ -107,7 +109,7 @@ class UserSchoolRecord(models.Model):
     start_year = models.PositiveIntegerField(default=0)
     end_date = models.DateField(blank=True, null=True)
 
-    objects: "UserSchoolRecordManager" = UserSchoolRecordManager()  # pyright: ignore
+    objects: ClassVar["UserSchoolRecordManager"] = UserSchoolRecordManager()
 
     class Meta:
         ordering = ["user_id", "start_date"]
