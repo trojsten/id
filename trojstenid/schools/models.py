@@ -180,4 +180,5 @@ class UserSchoolRecord(models.Model):
             "current_year": self.get_current_year(),
             "current_year_display": self.get_current_year_display(),
             "school_type": self.school_type.identifier,
+            "updated_at": self.updated_at.isoformat(),
         }
