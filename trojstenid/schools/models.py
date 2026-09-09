@@ -146,6 +146,11 @@ class UserSchoolRecord(models.Model):
             return False
         return True
 
+    def needs_confirmation(self):
+        return date_to_academic_year(self.updated_at) < date_to_academic_year(
+            timezone.now()
+        )
+
     def clean(self):
         if self.end_date and self.start_date >= self.end_date:
             raise ValidationError("Dátum nástupu musí byť skôr ako dátum ukončenia.")
