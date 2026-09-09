@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, TemplateView
 from PIL import ImageColor
 
+from trojstenid import audit
 from trojstenid.badges.models import Badge
 from trojstenid.users.groups import VEDUCI_GROUP
 from trojstenid.users.models import User
@@ -55,6 +56,8 @@ class ProfileView(LoginRequiredMixin, DetailView):
         ctx["show_details"] = self.request.user.groups.filter(
             name=VEDUCI_GROUP
         ).exists()
+        if ctx["show_details"]:
+            audit.log(self.request, f"viewed profile of {user.username}")
         ctx["groups"] = user.groups.values_list("name", flat=True)
         ctx["VEDUCI_GROUP"] = VEDUCI_GROUP
         ctx["badges"] = Badge.objects.filter(badgeassignment__user=user).select_related(
