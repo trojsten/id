@@ -37,15 +37,19 @@
 }
 
 .btn-blue {
-    @apply bg-blue-500 hover:bg-blue-600  focus-visible:outline-blue-600;
+    @apply bg-blue-500 hover:bg-blue-600 focus-visible:outline-blue-600;
 }
 
 .btn-black {
-    @apply bg-gray-900 hover:bg-gray-800  focus-visible:outline-gray-800;
+    @apply bg-gray-900 hover:bg-gray-800 focus-visible:outline-gray-800;
 }
 
 .btn-red {
-    @apply bg-red-500 hover:bg-red-600  focus-visible:outline-red-600;
+    @apply bg-red-500 hover:bg-red-600 focus-visible:outline-red-600;
+}
+
+.btn-green {
+    @apply bg-green-600 hover:bg-green-700 focus-visible:outline-green-700;
 }
 
 .link {

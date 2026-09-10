@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
+from django.views import View
 from django.views.generic import FormView, ListView, TemplateView
 
 from trojstenid.schools.forms import SchoolRecordForm
@@ -22,6 +23,13 @@ class SchoolRecordListView(LoginRequiredMixin, ListView):
         return UserSchoolRecord.objects.filter(user=self.request.user).select_related(
             "school", "school_type"
         )
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        assert isinstance(self.request.user, User)
+
+        ctx = super().get_context_data(**kwargs)
+        ctx["current_school_record"] = self.request.user.get_current_school_record()
+        return ctx
 
 
 class SchoolRecordCreateView(LoginRequiredMixin, FormView):
@@ -84,6 +92,16 @@ class SchoolRecordCreateView(LoginRequiredMixin, FormView):
             return self.form_invalid(form)
         record.save()
 
+        return HttpResponseRedirect(reverse("account_school"))
+
+
+class SchoolRecordVerifyView(LoginRequiredMixin, View):
+    http_method_names = ["post"]
+
+    def post(self, request):
+        record = request.user.get_current_school_record()
+        if record is not None:
+            record.save()
         return HttpResponseRedirect(reverse("account_school"))
 
 

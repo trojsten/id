@@ -1,5 +1,4 @@
 {% extends "settings_base.html" %}
-{% load forms %}
 
 {% block title %}Školy - {{ block.super }}{% endblock %}
 
@@ -7,9 +6,39 @@
   <div class="mx-auto max-w-2xl">
     <h2 class="text-xl font-bold text-gray-900">Informácie o školách</h2>
 
-    <form class="mt-6 space-y-6" method="post">
-      {% csrf_token %}
+    {% if current_school_record.needs_confirmation %}
+      <div class="rounded-md text-amber-800 bg-amber-50 p-4 mt-6 space-y-2">
+        <p>
+          <b>Skontroluj si prosím aktuálnosť údajov</b>
+        </p>
+        <p>
+          Podľa zadaných údajov navštevuješ tento školský rok
+          <strong>
+            {{ current_school_record.get_current_year_display }}
+            ({{ current_school_record.school_type.short }})
+          </strong>
+          na škole <strong>{{ current_school_record.school }}</strong>.
+        </p>
+        <p>
+          Je to správne?
+        </p>
+        <div class="grid grid-cols-2 gap-2">
+          <a href="{% url 'account_school_create' %}" class="btn btn-blue">
+            <span data-icon="mdi:edit" class="iconify size-5"></span>
+            Zmeniť informácie o škole
+          </a>
+          <form method="POST" action="{% url 'account_school_verify' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-green">
+              <span data-icon="mdi:check-decagram" class="iconify size-5"></span>
+              Údaje sú aktuálne
+            </button>
+          </form>
+        </div>
+      </div>
+    {% endif %}
 
+    <div class="mt-6 space-y-6">
       <div class="rounded-sm border overflow-hidden divide-y">
         {% for record in object_list %}
           <div class="p-4 flex justify-between items-center flex-wrap gap-y-2">
@@ -37,7 +66,10 @@
 
       <p class="text-gray-600 text-sm -mt-4">Pre zmenu historických dát kontaktuj <a href="mailto:info@trojsten.sk" class="link">info@trojsten.sk</a>.</p>
 
-      <a href="{% url 'account_school_create' %}" class="btn btn-blue">Zmeniť informácie o škole</a>
-    </form>
+      <a href="{% url 'account_school_create' %}" class="btn btn-blue">
+        <span data-icon="mdi:edit" class="iconify size-5"></span>
+        Zmeniť informácie o škole
+      </a>
+    </div>
   </div>
 {% endblock content %}
