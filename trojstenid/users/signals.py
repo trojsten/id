@@ -3,6 +3,7 @@ import logging
 from allauth.account.models import EmailAddress
 from allauth.account.signals import email_confirmed, user_logged_out
 from allauth.socialaccount.models import SocialAccount
+from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth.signals import (
     user_logged_out as dj_user_logged_out,
 )
@@ -28,6 +29,11 @@ def sync_groups_after_confirm(request, email_address: EmailAddress, **kwargs):
             f"user {email_address.user.username} has verified @trojsten.sk address, syncing groups"
         )
         sync_groups.delay()
+
+
+@receiver([user_logged_in])
+def log_user_login(request, user: User, **kwargs):
+    audit.log(request, "logged in")
 
 
 @receiver([user_logged_out, dj_user_logged_out])
