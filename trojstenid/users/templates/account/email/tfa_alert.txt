@@ -1,0 +1,13 @@
+{% extends "account/email/base_message.txt" %}
+
+{% block content %}Pred pár dňami ti bol vytvorený nový Trojstenový Google účet ({{ email }}).
+
+Tento email ti prichádza preto, že si si v ňom ešte nenastavil dvojstupňové overenie (2FA).
+Do dvoch týždňov od vytvorenie účtu si musíš nastaviť dvojstupňové overenie (pre teba najneskôr {{ required_after|date:"d.m.Y" }} do {{ required_after|time:"H:i" }}), inak stratíš prístup k účtu.
+
+Návod na to, ako to urobiť, nájdeš tu:
+
+https://support.google.com/accounts/answer/185839?hl=sk
+
+Ak to dovtedy nestihneš a nebudeš sa vedieť prihlásiť do účtu, napíš nám na roots@trojsten.sk a vyriešime to.
+{% endblock content %}

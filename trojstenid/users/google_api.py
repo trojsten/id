@@ -1,15 +1,21 @@
 import json
 import logging
+from datetime import datetime
 
 from allauth.account.models import EmailAddress
+from dateutil.parser import isoparse
 from django.conf import settings
 from django.contrib.auth.models import Group
+from django.utils.timezone import now
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 logger = logging.getLogger(__name__)
 
-SCOPES = ["https://www.googleapis.com/auth/admin.directory.group.readonly"]
+SCOPES = [
+    "https://www.googleapis.com/auth/admin.directory.group.readonly",
+    "https://www.googleapis.com/auth/admin.directory.user.readonly",
+]
 IAM_DOMAIN = "iam.trojsten.sk"
 
 
@@ -103,3 +109,51 @@ def sync_iam_groups() -> None:
     """
     for group in fetch_iam_google_groups():
         sync_group(group)
+
+
+def query_nontfa_users() -> list[tuple[str, datetime, list[str]]]:
+    """
+    Returns all email addresses of users whose account is new and has not enabled 2FA.
+    """
+    min_account_age = getattr(settings, "GOOGLE_TFA_MIN_ACCOUNT_AGE")
+    max_account_age = getattr(settings, "GOOGLE_TFA_MAX_ACCOUNT_AGE")
+    enrollment_period = getattr(settings, "GOOGLE_TFA_ENROLLMENT_PERIOD")
+
+    credentials = _get_credentials()
+    if credentials is None:
+        logger.warning("Google Admin service account not configured")
+        return []
+
+    users = []
+
+    directory = build("admin", "directory_v1", credentials=credentials)
+    request = directory.users().list(
+        customer="my_customer",
+        orderBy="email",
+        query="isEnrolledIn2Sv=false isEnforcedIn2Sv=true",
+    )
+    while request:
+        response = request.execute()
+
+        for user in response.get("users", []):
+            email = user.get("primaryEmail", "")
+            creation_time = (
+                isoparse(user["creationTime"]) if "creationTime" in user else None
+            )
+            if creation_time:
+                account_age = now() - creation_time
+                if min_account_age <= account_age <= max_account_age:
+                    users.append(
+                        (
+                            email,
+                            creation_time + enrollment_period,
+                            [
+                                e.get("address")
+                                for e in user.get("emails", [])
+                                if "address" in e and not e.get("primary", False)
+                            ],
+                        )
+                    )
+
+        request = directory.users().list_next(request, response)
+    return users
