@@ -118,9 +118,6 @@ def query_nontfa_users() -> list[tuple[str, datetime, list[str]]]:
     min_account_age = getattr(settings, "GOOGLE_TFA_MIN_ACCOUNT_AGE")
     max_account_age = getattr(settings, "GOOGLE_TFA_MAX_ACCOUNT_AGE")
     enrollment_period = getattr(settings, "GOOGLE_TFA_ENROLLMENT_PERIOD")
-    if min_account_age is None or max_account_age is None or enrollment_period is None:
-        logger.warning("Google TFA account age or enrollment period not configured")
-        return []
 
     credentials = _get_credentials()
     if credentials is None:
