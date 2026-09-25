@@ -287,6 +287,8 @@ RQ_QUEUES = {
     },
 }
 
+MEILISEARCH_URL = env("MEILISEARCH_URL", default="http://meilisearch:7700/")
+MEILISEARCH_KEY = env("MEILISEARCH_KEY", default=None)
 
 if DEBUG:
     import socket  # only if you haven't already imported this

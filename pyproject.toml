@@ -30,6 +30,7 @@ dependencies = [
     "google-api-python-client>=2.196.0",
     "google-auth>=2.53.0",
     "pygithub>=2.9.1",
+    "meilisearch>=0.43.0",
 ]
 
 [tool.ruff.lint]
