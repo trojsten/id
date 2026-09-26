@@ -51,6 +51,6 @@ class Command(BaseCommand):
             }
         )
 
-        search.client.index("schools").add_documents(schools)
+        search.client.index("schools").add_documents(schools, primary_key="id")
 
         self.stdout.write(self.style.SUCCESS("Schools indexed successfully."))
