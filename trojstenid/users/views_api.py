@@ -97,5 +97,5 @@ class UserDetailView(generics.RetrieveAPIView):
 
         try:
             return qs.get(id=int(lookup_value))
-        except (ValueError, User.DoesNotExist):
+        except ValueError, User.DoesNotExist:
             return qs.get(username=lookup_value)

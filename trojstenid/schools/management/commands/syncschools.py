@@ -4,6 +4,8 @@ from django.core.management.base import BaseCommand
 
 from trojstenid.schools.services.school_sync import create_null_school, sync_schools
 
+from .indexschools import Command as IndexSchoolsCommand
+
 
 class Command(BaseCommand):
     help = "Sync school database."
@@ -12,3 +14,5 @@ class Command(BaseCommand):
         sync_schools()
         create_null_school()
         self.stdout.write(self.style.SUCCESS("School sync sucessfull."))
+
+        IndexSchoolsCommand().handle()

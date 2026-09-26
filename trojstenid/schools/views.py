@@ -11,6 +11,7 @@ from django.utils.functional import cached_property
 from django.views import View
 from django.views.generic import FormView, ListView, TemplateView
 
+from trojstenid import search
 from trojstenid.schools.forms import SchoolRecordForm
 from trojstenid.schools.models import School, UserSchoolRecord
 from trojstenid.users.models import User
@@ -111,5 +112,11 @@ class SchoolSearchView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         ctx = super().get_context_data(**kwargs)
         query = self.request.GET.get("q", "")
-        ctx["schools"] = School.objects.search(query)[:10]
+        result = search.client.index("schools").search(
+            query,
+            {
+                "limit": 10,
+            },
+        )
+        ctx["schools"] = result["hits"]
         return ctx

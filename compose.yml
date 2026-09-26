@@ -36,5 +36,11 @@ services:
   redis:
     image: redis
 
+  meilisearch:
+    image: getmeili/meilisearch:v1.12.5
+    volumes:
+      - search_data:/meili_data
+
 volumes:
   postgres_data:
+  search_data:

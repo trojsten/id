@@ -1,5 +1,5 @@
 {% for school in schools %}
-<a href="?school_id={{ school.id }}" class="block py-2 px-3 rounded-sm border hover:bg-gray-100">{{ school }}</a>
+<a href="?school_id={{ school.id }}" class="block py-2 px-3 rounded-sm border hover:bg-gray-100">{{ school.name }}{% if school.address %}, {{ school.address }}{% endif %}</a>
 {% endfor %}
 <a href="?school_id=-1" class="block py-2 px-3 rounded-sm border hover:bg-gray-100 text-gray-600">
   Moja škola nie je v zozname.
