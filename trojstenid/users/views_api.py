@@ -4,6 +4,7 @@ from hmac import compare_digest
 from django.conf import settings
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
+from django.http.response import Http404
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -50,6 +51,7 @@ class UserListView(generics.ListAPIView):
     """
     List all users.
     Search by username, email, or name using ?search=.
+    Optionally ?id__in= can be used (comma-separated list of user IDs) to only list specific users.
     """
 
     serializer_class = UserListSerializer
@@ -58,11 +60,17 @@ class UserListView(generics.ListAPIView):
     def get_queryset(self):
         user: User = self.request.user  # type:ignore
         search_query = self.request.GET.get("search", None)
+        id_list = self.request.GET.get("id__in", None)
+        if id_list:
+            id_list = [int(x) for x in id_list.split(",") if x.isdigit()]
 
         if user.is_staff:
             qs = User.objects.all()
         else:
             qs = User.objects.filter(id=user.id)
+
+        if id_list:
+            qs = qs.filter(id__in=id_list)
 
         if search_query:
             qs = qs.filter(
@@ -99,3 +107,5 @@ class UserDetailView(generics.RetrieveAPIView):
             return qs.get(id=int(lookup_value))
         except ValueError, User.DoesNotExist:
             return qs.get(username=lookup_value)
+        except User.DoesNotExist:
+            raise Http404
