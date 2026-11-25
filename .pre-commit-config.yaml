@@ -17,3 +17,12 @@ repos:
     hooks:
       - id: djade
         args: [--target-version, "5.2"]
+
+  - repo: local
+    hooks:
+      - id: check-migrations
+        name: check migrations
+        entry: uv run --frozen manage.py makemigrations --check
+        language: system
+        types: [python]
+        pass_filenames: false

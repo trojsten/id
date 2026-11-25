@@ -12,30 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@v7
 
-    - uses: actions/setup-python@v5
+    - uses: astral-sh/setup-uv@v6
       with:
-        python-version: '3.12'
+        enable-cache: true
 
     - uses: pre-commit/action@v3.0.1
-
-  migrations:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-
-    - name: Install uv
-      uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
-
-    - name: Install Dependencies
-      run: uv sync --locked
-      env:
-        UV_EXCLUDE_NEWER: "7 days"
-
-    - name: Test for missing migrations
-      run: uv run python manage.py makemigrations --check
-      env:
-        DEBUG: True
-        DATABASE_URL: "sqlite://:memory:"
-        RECAPTCHA_PUBLIC: ""
-        RECAPTCHA_PRIVATE: ""
-        OIDC_KEY: ""
