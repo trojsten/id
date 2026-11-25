@@ -22,7 +22,7 @@ repos:
     hooks:
       - id: check-migrations
         name: check migrations
-        entry: 'sh -c "DATABASE_URL=sqlite://:memory: RECAPTCHA_PUBLIC= RECAPTCHA_PRIVATE= uv run --frozen manage.py makemigrations --check"'
+        entry: 'sh -c "DATABASE_URL=sqlite://:memory: RECAPTCHA_PUBLIC= RECAPTCHA_PRIVATE= OIDC_KEY= uv run --frozen manage.py makemigrations --check"'
         language: system
         types: [python]
         pass_filenames: false
