@@ -31,6 +31,7 @@ DEBUG = env("DEBUG", default=False)
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_HSTS_SECONDS = 3600
+CSRF_FAILURE_VIEW = "trojstenid.users.views.csrf_failure"
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 

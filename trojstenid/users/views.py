@@ -1,7 +1,11 @@
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views import View
+from django.views.csrf import csrf_failure as default_csrf_failure
 from django.views.generic import TemplateView, UpdateView
 from oauth2_provider.views import AuthorizationView
 
@@ -9,6 +13,8 @@ from trojstenid.users.forms.settings import ProfileForm
 from trojstenid.users.groups import VEDUCI_GROUP, WIFI_GROUP
 from trojstenid.users.models import Application, User, WifiPassword
 from trojstenid.users.tasks import sync_groups
+
+logger = logging.getLogger(__name__)
 
 
 class VeduciRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -112,3 +118,14 @@ class GroupSyncView(VeduciRequiredMixin, View):
         sync_groups.delay()
         messages.success(request, "Synchronizácia skupín bola spustená na pozadí.")
         return redirect("group_list")
+
+
+def csrf_failure(request, reason=""):
+    logger.warning("CSRF failure on %s %s: %s", request.method, request.path, reason)
+
+    # A double-submitted login form: the first POST logs the user in and rotates
+    # the CSRF token, so the second one carries the old token from the page.
+    if request.method == "POST" and request.path == reverse("account_login"):
+        return redirect("account_login")
+
+    return default_csrf_failure(request, reason=reason)
